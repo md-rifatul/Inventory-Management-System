@@ -1,4 +1,8 @@
+using Inventory.Application.Interfaces.IRepository;
+using Inventory.Application.Interfaces.IServices;
+using Inventory.Application.Services;
 using Inventory.Infrastructure.Data;
+using Inventory.Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +12,13 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
+//Repo
+builder.Services.AddScoped<ICategoryRepository,CategoryRepository>();
+
+//Services
+builder.Services.AddScoped<ICategoryService,CategoryService>();
 
 var app = builder.Build();
 
