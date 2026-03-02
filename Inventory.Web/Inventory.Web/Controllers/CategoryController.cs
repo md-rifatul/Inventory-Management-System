@@ -28,5 +28,19 @@ namespace Inventory.Web.Controllers
             _categoryService.AddCategory(categoryName);
             return RedirectToAction("Index");
         }
+        [HttpGet]
+        public IActionResult Remove(int id)
+        {
+            var category = _categoryService.GetCategoryById(id);
+
+            return View(category);
+        }
+        [HttpPost]
+        public IActionResult RemoveConfirmed(int id)
+        {
+            var category = _categoryService.GetCategoryById(id);
+            _categoryService.RemoveCategory(category);
+            return RedirectToAction("Index");
+        }
     }
 }
