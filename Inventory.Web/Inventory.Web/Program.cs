@@ -16,9 +16,11 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 //Repo
 builder.Services.AddScoped<ICategoryRepository,CategoryRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
 //Services
 builder.Services.AddScoped<ICategoryService,CategoryService>();
+builder.Services.AddScoped<IProductService, ProductService>();
 
 var app = builder.Build();
 
