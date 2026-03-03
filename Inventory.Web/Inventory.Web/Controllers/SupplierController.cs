@@ -48,6 +48,19 @@ namespace Inventory.Web.Controllers
             }
             return NotFound();
         }
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            var supplier = _supplierService.GetSupplierById(id);
+            return View(supplier);
+        }
+
+        [HttpPost]
+        public IActionResult Delete(Supplier supplier)
+        {
+            _supplierService.RemoveSupplier(supplier);
+            return RedirectToAction("Index");
+        }
 
     }
 }
