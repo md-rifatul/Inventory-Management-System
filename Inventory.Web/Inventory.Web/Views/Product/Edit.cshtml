@@ -45,6 +45,15 @@
         </select>
         <span asp-validation-for="CategoryId" class="text-danger"></span>
     </div>
+    <div class="mb-3">
+        <label asp-for="SupplierId" class="form-label">Supplier</label>
+        <select asp-for="SupplierId"
+                asp-items="ViewBag.Suppliers"
+                class="form-control">
+            <option value="">-- Select Supplier --</option>
+        </select>
+        <span asp-validation-for="SupplierId" class="text-danger"></span>
+    </div>
 
     <button type="submit" class="btn btn-primary">Update</button>
     <a asp-action="Index" class="btn btn-secondary">Back</a>

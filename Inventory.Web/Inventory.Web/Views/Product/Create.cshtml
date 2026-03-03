@@ -41,6 +41,14 @@
         </select>
         <span asp-validation-for="CategoryId" class="text-danger"></span>
     </div>
+    <div class="mb-3">
+        <label asp-for="SupplierId" class="form-label">Supplier</label>
+        <select asp-for="SupplierId" class="form-control"
+                asp-items="ViewBag.Suppliers">
+            <option value="">-- Select Supplier --</option>
+        </select>
+        <span asp-validation-for="SupplierId" class="text-danger"></span>
+    </div>
 
     <button type="submit" class="btn btn-success">Save</button>
     <a asp-action="Index" class="btn btn-secondary">Back to List</a>

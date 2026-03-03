@@ -9,10 +9,12 @@ namespace Inventory.Web.Controllers
     {
         private readonly IProductService _productService;
         private readonly ICategoryService _categoryService;
-        public ProductController(IProductService productService, ICategoryService categoryService)
+        private readonly ISupplierService _supplierService;
+        public ProductController(IProductService productService, ICategoryService categoryService, ISupplierService supplierService)
         {
             _productService = productService;
             _categoryService = categoryService;
+            _supplierService = supplierService;
         }
 
         public IActionResult Index()
@@ -23,7 +25,9 @@ namespace Inventory.Web.Controllers
         public IActionResult Create()
         {
             var categories = _categoryService.GetAllCategories();
+            var suppliers = _supplierService.GetAllSuppliers();
             ViewBag.Categories = new SelectList(categories, "Id", "Name");
+            ViewBag.Suppliers = new SelectList(suppliers, "Id", "Name");
             return View();
         }
         [HttpPost]
@@ -35,7 +39,9 @@ namespace Inventory.Web.Controllers
                 return RedirectToAction("Index");
             }
             var categories = _categoryService.GetAllCategories();
+            var suppliers = _supplierService.GetAllSuppliers();
             ViewBag.Categories = new SelectList(categories, "Id", "Name");
+            ViewBag.Suppliers = new SelectList(suppliers, "Id", "Name");
             return View();
 
         }
@@ -48,7 +54,9 @@ namespace Inventory.Web.Controllers
                 return NotFound();
             }
             var categories = _categoryService.GetAllCategories();
+            var suppliers = _supplierService.GetAllSuppliers();
             ViewBag.Categories = new SelectList(categories,"Id","Name",product.CategoryId);
+            ViewBag.Suppliers = new SelectList(suppliers, "Id","Name",product.SupplierId);
             return View(product);
         }
         [HttpPost]
@@ -61,7 +69,9 @@ namespace Inventory.Web.Controllers
             }
 
             var categories = _categoryService.GetAllCategories();
+            var suppliers = _supplierService.GetAllSuppliers();
             ViewBag.Categories = new SelectList(categories, "Id", "Name", product.CategoryId);
+            ViewBag.Suppliers = new SelectList(suppliers, "Id", "Name", product.SupplierId);
 
             return View(product);
         }
