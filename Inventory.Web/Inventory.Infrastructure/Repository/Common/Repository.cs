@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -26,5 +27,15 @@ namespace Inventory.Infrastructure.Repository.Common
         public void Update(T entity) => _dbSet.Update(entity);
         public void Delete(T entity) => _dbSet.Remove(entity);
         public void Save() => _dbcontext.SaveChanges();
+
+        public IEnumerable<T> GetAllIncluding(params Expression<Func<T, object>>[] includes)
+        {
+            IQueryable<T> query = _dbSet;
+
+            foreach (var include in includes)
+                query = query.Include(include);
+
+            return query.ToList();
+        }
     }
 }
