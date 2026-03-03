@@ -11,7 +11,7 @@ namespace Inventory.Application.Interfaces.IRepository.Common
     {
         IEnumerable<T> GetAll();
         IEnumerable<T> GetAllIncluding(params Expression<Func<T, object>>[] includes);
-        T? GetById(int id);
+        T? GetByIdIncluding(int id, params Expression<Func<T, object>>[] includes);
         void Add(T entity);
         void Update(T entity);
         void Delete(T entity);

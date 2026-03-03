@@ -30,7 +30,7 @@ namespace Inventory.Application.Services
 
         public Category GetCategoryById(int id)
         {
-            return _categoryRepository.GetById(id);
+            return _categoryRepository.GetByIdIncluding(id);
         }
 
         public void RemoveCategory(Category categoryName)

@@ -22,7 +22,17 @@ namespace Inventory.Infrastructure.Repository.Common
         }
 
         public IEnumerable<T> GetAll() => _dbSet.ToList();
-        public T? GetById(int id) => _dbSet.Find(id);
+        public T? GetByIdIncluding(int id, params Expression<Func<T, object>>[] includes)
+        {
+            IQueryable<T> query = _dbSet;
+
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+
+            return query.FirstOrDefault(e => EF.Property<int>(e, "Id") == id);
+        }
         public void Add(T entity) => _dbSet.Add(entity);
         public void Update(T entity) => _dbSet.Update(entity);
         public void Delete(T entity) => _dbSet.Remove(entity);

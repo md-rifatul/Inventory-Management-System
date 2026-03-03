@@ -29,7 +29,7 @@ namespace Inventory.Web.Controllers
         [HttpPost]
         public IActionResult Create(Product product)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 _productService.AddProduct(product);
                 return RedirectToAction("Index");
@@ -38,6 +38,52 @@ namespace Inventory.Web.Controllers
             ViewBag.Categories = new SelectList(categories, "Id", "Name");
             return View();
 
+        }
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var product = _productService.GetProductById(id);
+            if(product == null)
+            {
+                return NotFound();
+            }
+            var categories = _categoryService.GetAllCategories();
+            ViewBag.Categories = new SelectList(categories,"Id","Name",product.CategoryId);
+            return View(product);
+        }
+        [HttpPost]
+        public IActionResult Edit(Product product)
+        {
+            if (ModelState.IsValid)
+            {
+                _productService.UpdateProduct(product);
+                return RedirectToAction("Index");
+            }
+
+            var categories = _categoryService.GetAllCategories();
+            ViewBag.Categories = new SelectList(categories, "Id", "Name", product.CategoryId);
+
+            return View(product);
+        }
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            var product = _productService.GetProductById(id);
+
+            if (product == null)
+                return NotFound();
+
+            return View(product);
+        }
+        [HttpPost]
+        public IActionResult Delete(Product product)
+        {
+            if (ModelState.IsValid)
+            {
+                _productService.RemoveProduct(product);
+                return RedirectToAction("Index");
+            }
+            return View(product);
         }
     }
 }
