@@ -18,5 +18,7 @@ namespace Inventory.Domain.Entities
         public int SupplierId { get; set; }
         public Category? Category { get; set; }
         public Supplier? Supplier { get; set; }
+
+        public ICollection<StockTransaction> StockTransactions { get; set; } = new List<StockTransaction>();
     }
 }

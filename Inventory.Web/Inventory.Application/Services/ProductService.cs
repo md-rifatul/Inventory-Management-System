@@ -30,7 +30,7 @@ namespace Inventory.Application.Services
 
         public Product GetProductById(int id)
         {
-            return _productRepository.GetByIdIncluding(id,c=>c.Category);
+            return _productRepository.GetByIdIncluding(id,c=>c.Category,p=>p.Supplier);
         }
 
         public void RemoveProduct(Product productName)
