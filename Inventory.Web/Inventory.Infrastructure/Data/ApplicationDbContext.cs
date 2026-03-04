@@ -19,5 +19,6 @@ namespace Inventory.Infrastructure.Data
         public DbSet<Product> Products { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<StockTransaction> StockTransactions { get; set; }
+        public DbSet<PurchaseOrder> PurchaseOrders { get; set; }
     }
 }

@@ -11,7 +11,9 @@ namespace Inventory.Domain.Entities
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
-        public int Phone { get; set; }
+        public string Phone { get; set; } = string.Empty;
         public string Address { get; set; } = string.Empty;
+        public ICollection<Product> Products { get; set; } = new List<Product>();
+        public ICollection<Supplier> Suppliers { get; set; } = new List<Supplier>();
     }
 }
