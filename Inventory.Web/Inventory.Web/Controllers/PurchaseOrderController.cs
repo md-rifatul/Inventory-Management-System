@@ -62,5 +62,26 @@ namespace Inventory.Web.Controllers
             return View(suppliers);
 
         }
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            var purchaseOrders = _purchaseOrderService.GetPurchaseOrder(id);
+            var suppliers = _supplierService.GetAllSuppliers();
+            ViewBag.Suppliers = new SelectList(suppliers, "Id", "Name");
+            return View(purchaseOrders);
+        }
+        [HttpPost]
+        public IActionResult Delete(PurchaseOrder purchaseOrder)
+        {
+            if (ModelState.IsValid)
+            {
+                _purchaseOrderService.RemovePurchaseOrder(purchaseOrder);
+                return RedirectToAction("Index");
+            }
+            var suppliers = _supplierService.GetAllSuppliers();
+            ViewBag.Suppliers = new SelectList(suppliers, "Id", "Name");
+            return View(suppliers);
+
+        }
     }
 }

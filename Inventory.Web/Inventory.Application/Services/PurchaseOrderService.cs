@@ -34,7 +34,8 @@ namespace Inventory.Application.Services
 
         public void RemovePurchaseOrder(PurchaseOrder purchaseOrder)
         {
-            throw new NotImplementedException();
+            _purchaseOrderRepository.Delete(purchaseOrder);
+            _purchaseOrderRepository.Save();
         }
 
         public void UpdatePurchaseOrder(PurchaseOrder purchaseOrder)
