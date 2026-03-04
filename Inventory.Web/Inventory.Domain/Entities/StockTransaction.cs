@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Inventory.Domain.Entities.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ namespace Inventory.Domain.Entities
     public class StockTransaction
     {
         public int Id { get; set; }
-        public string TransactionType { get; set; } = string.Empty;
+        public TransactionType TransactionType { get; set; }
         public int Quantity { get; set; }
         public int BlanceAfter { get; set; }
 
