@@ -8,7 +8,7 @@ namespace Inventory.Domain.Entities.Enums
 {
     public enum TransactionType
     {
-        Purchase,
-        Sale,
+        Purchase = 1,
+        Sale = 2,
     }
 }
