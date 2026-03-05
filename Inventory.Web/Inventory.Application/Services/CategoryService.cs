@@ -25,7 +25,7 @@ namespace Inventory.Application.Services
 
         public IEnumerable<Category> GetAllCategories()
         {
-            return _categoryRepository.GetAll();
+            return _categoryRepository.GetAllIncluding(p=>p.Products);
         }
 
         public Category GetCategoryById(int id)
