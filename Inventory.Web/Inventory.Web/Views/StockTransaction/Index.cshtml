@@ -14,7 +14,7 @@
             <th>Product</th>
             <th>Transaction Type</th>
             <th>Quantity</th>
-            <th>Balance After</th>
+            <th>Quantity After</th>
         </tr>
     </thead>
 
@@ -37,7 +37,7 @@
                 </td>
 
                 <td>
-                    @item.BlanceAfter
+                    @item.Product?.QuantityOfStock
                 </td>
             </tr>
         }
