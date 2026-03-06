@@ -15,5 +15,6 @@ namespace Inventory.Application.Interfaces.IServices
         void RemoveProduct(Product productName);
         void UpdateProduct(Product productName);
         IEnumerable<Product> GetMinimumStockLevels();
+        IEnumerable<Product> SearchProducts(string search);
     }
 }

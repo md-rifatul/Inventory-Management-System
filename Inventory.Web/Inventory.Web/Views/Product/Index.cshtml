@@ -11,6 +11,11 @@
     <a asp-action="Create" class="btn btn-primary">Create New Product</a>
 </p>
 
+<form asp-action="Search" method="get" class="form-inline mb-3">
+    <input type="text" name="productName" class="form-control mr-2" placeholder="Search products..." />
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
+
 <table class="table table-bordered table-striped">
     <thead class="table-dark">
         <tr>

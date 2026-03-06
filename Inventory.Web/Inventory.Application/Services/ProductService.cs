@@ -46,6 +46,16 @@ namespace Inventory.Application.Services
             _productRepository.Save();
         }
 
+        public IEnumerable<Product> SearchProducts(string search)
+        {
+            var products = _productRepository.Search(
+                p => p.Name.Contains(search) || p.Sku.Contains(search), // predicate
+                p => p.Category,                                        // include
+                p => p.Supplier                                         // include
+            );
+            return products;
+        }
+
         public void UpdateProduct(Product productName)
         {
             _productRepository.Update(productName);

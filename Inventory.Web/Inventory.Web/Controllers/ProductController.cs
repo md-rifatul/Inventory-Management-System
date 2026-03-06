@@ -116,5 +116,11 @@ namespace Inventory.Web.Controllers
             _productService.UpdateProduct(product);
             return RedirectToAction("Index");
         }
+        [HttpGet]
+        public IActionResult Search(string productName)
+        {
+            var products = _productService.SearchProducts(productName);
+            return View("Index", products);
+        }
     }
 }

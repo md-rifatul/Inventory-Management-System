@@ -1,4 +1,5 @@
 ﻿using Inventory.Application.Interfaces.IRepository.Common;
+using Inventory.Domain.Entities;
 using Inventory.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -46,6 +47,19 @@ namespace Inventory.Infrastructure.Repository.Common
                 query = query.Include(include);
 
             return query.ToList();
+        }
+
+        public IEnumerable<T> Search(Expression<Func<T, bool>> predicate,
+                                     params Expression<Func<T, object>>[] includes)
+        {
+            IQueryable<T> query = _dbcontext.Set<T>();
+
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+
+            return query.Where(predicate).ToList();
         }
     }
 }
