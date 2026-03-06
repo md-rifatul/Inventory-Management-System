@@ -9,7 +9,7 @@ namespace Inventory.Web.Controllers
     {
         private readonly IPurchaseOrderService _purchaseOrderService;
         private readonly ISupplierService _supplierService;
-        public PurchaseOrderController(IPurchaseOrderService purchaseOrderService, ISupplierService supplierService)
+        public PurchaseOrderController(IPurchaseOrderService purchaseOrderService, ISupplierService supplierService, IProductService productService)
         {
             _purchaseOrderService = purchaseOrderService;
             _supplierService = supplierService;
