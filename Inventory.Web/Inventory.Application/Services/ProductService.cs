@@ -40,9 +40,9 @@ namespace Inventory.Application.Services
             return _productRepository.GetByIdIncluding(id,c=>c.Category,p=>p.Supplier);
         }
 
-        public void RemoveProduct(Product productName)
+        public void RemoveProduct(Product product)
         {
-            _productRepository.Delete(productName);
+            _productRepository.Delete(product);
             _productRepository.Save();
         }
 

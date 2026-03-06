@@ -10,7 +10,7 @@ namespace Inventory.Domain.Entities
     public class PurchaseOrder
     {
         public int Id { get; set; }
-        public string OrderNumber { get; set; } = string.Empty;
+        public string OrderNumber { get; set; } = Guid.NewGuid().ToString();
         public decimal TotalAmount { get; set; }
         public PurchaseOrderStatus purchaseOrderStatus { get; set; }
         public int SupplierId { get; set; }
