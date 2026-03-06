@@ -1,0 +1,35 @@
+﻿@using Inventory.Domain.Entities
+@model IEnumerable<Product>
+
+@{
+    ViewData["Title"] = "Low Stock Products";
+}
+
+<h2>Low Stock Products</h2>
+
+<table class="table table-bordered table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th>Id</th>
+            <th>Product Name</th>
+            <th>SKU</th>
+            <th>Category</th>
+            <th>Stock</th>
+            <th>Minimum Level</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr class="table-danger">
+                <td>@item.Id</td>
+                <td>@item.Name</td>
+                <td>@item.Sku</td>
+                <td>@item.Category?.Name</td>
+                <td>@item.QuantityOfStock</td>
+                <td>@item.MinimumStockLevel</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -28,6 +28,13 @@ namespace Inventory.Application.Services
             return _productRepository.GetAllIncluding(p => p.Category, s => s.Supplier);
         }
 
+        public IEnumerable<Product> GetMinimumStockLevels()
+        {
+            var products = _productRepository.GetAllIncluding(x=>x.Category)
+                .Where(x => x.QuantityOfStock <= x.MinimumStockLevel);
+            return products;
+        }
+
         public Product GetProductById(int id)
         {
             return _productRepository.GetByIdIncluding(id,c=>c.Category,p=>p.Supplier);

@@ -32,6 +32,11 @@
         <input asp-for="QuantityOfStock" class="form-control" />
         <span asp-validation-for="QuantityOfStock" class="text-danger"></span>
     </div>
+    <div class="mb-3">
+        <label asp-for="MinimumStockLevel" class="form-label"></label>
+        <input asp-for="MinimumStockLevel" class="form-control" />
+        <span asp-validation-for="MinimumStockLevel" class="text-danger"></span>
+    </div>
 
     <div class="mb-3">
         <label asp-for="CategoryId" class="form-label">Category</label>

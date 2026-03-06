@@ -24,11 +24,12 @@ namespace Inventory.Web.Controllers
         }
         public IActionResult Create()
         {
+            var product = new Product();
             var categories = _categoryService.GetAllCategories();
             var suppliers = _supplierService.GetAllSuppliers();
             ViewBag.Categories = new SelectList(categories, "Id", "Name");
             ViewBag.Suppliers = new SelectList(suppliers, "Id", "Name");
-            return View();
+            return View(product);
         }
         [HttpPost]
         public IActionResult Create(Product product)
@@ -94,6 +95,12 @@ namespace Inventory.Web.Controllers
                 return RedirectToAction("Index");
             }
             return View(product);
+        }
+        [HttpGet]
+        public IActionResult LowStock()
+        {
+            var products = _productService.GetMinimumStockLevels();
+            return View(products);
         }
     }
 }
