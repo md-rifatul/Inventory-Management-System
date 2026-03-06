@@ -102,5 +102,19 @@ namespace Inventory.Web.Controllers
             var products = _productService.GetMinimumStockLevels();
             return View(products);
         }
+        [HttpGet]
+        public IActionResult Add(int id)
+        {
+            var product = _productService.GetProductById(id);
+            return View(product);
+        }
+        [HttpPost]
+        public IActionResult Add(int id, int AddedQuantity)
+        {
+            var product = _productService.GetProductById(id);
+            product.QuantityOfStock += AddedQuantity;
+            _productService.UpdateProduct(product);
+            return RedirectToAction("Index");
+        }
     }
 }
