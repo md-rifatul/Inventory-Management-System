@@ -1,5 +1,8 @@
-﻿using Inventory.Application.Interfaces.IRepository;
+﻿using AutoMapper;
+using Inventory.Application.DTOs;
+using Inventory.Application.Interfaces.IRepository;
 using Inventory.Application.Interfaces.IServices;
+using Inventory.Application.Mappings;
 using Inventory.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -12,9 +15,11 @@ namespace Inventory.Application.Services
     public class ProductService : IProductService
     {
         private readonly IProductRepository _productRepository;
-        public ProductService(IProductRepository productRepository)
+        private readonly IMapper _mapper;
+        public ProductService(IProductRepository productRepository, IMapper mapper)
         {
             _productRepository = productRepository;
+            _mapper = mapper;
         }
 
         public void AddProduct(Product productName)
@@ -23,9 +28,12 @@ namespace Inventory.Application.Services
             _productRepository.Save();
         }
 
-        public IEnumerable<Product> GetAllProducts()
+        public IEnumerable<ProductViewModel> GetAllProducts()
         {
-            return _productRepository.GetAllIncluding(p => p.Category, s => s.Supplier);
+            var products = _productRepository.GetAllIncluding(p => p.Category, s => s.Supplier);
+            var vm = _mapper.Map<IEnumerable<ProductViewModel>>(products);
+            return vm;
+            
         }
 
         public IEnumerable<Product> GetMinimumStockLevels()

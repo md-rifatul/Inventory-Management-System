@@ -1,4 +1,5 @@
-﻿using Inventory.Domain.Entities;
+﻿using Inventory.Application.DTOs;
+using Inventory.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace Inventory.Application.Interfaces.IServices
 {
     public interface IProductService
     {
-        IEnumerable<Product> GetAllProducts();
+        IEnumerable<ProductViewModel> GetAllProducts();
         Product GetProductById(int id);
         void AddProduct(Product productName);
         void RemoveProduct(Product productName);
