@@ -12,7 +12,7 @@ namespace Inventory.Application.Interfaces.IServices
     {
         IEnumerable<ProductViewModel> GetAllProducts();
         Product GetProductById(int id);
-        void AddProduct(Product productName);
+        void AddProduct(ProductCreateViewModel productName);
         void RemoveProduct(Product productName);
         void UpdateProduct(Product productName);
         IEnumerable<Product> GetMinimumStockLevels();

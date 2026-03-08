@@ -1,4 +1,5 @@
-﻿using Inventory.Application.Interfaces.IServices;
+﻿using Inventory.Application.DTOs;
+using Inventory.Application.Interfaces.IServices;
 using Inventory.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -24,26 +25,48 @@ namespace Inventory.Web.Controllers
         }
         public IActionResult Create()
         {
-            var product = new Product();
             var categories = _categoryService.GetAllCategories();
             var suppliers = _supplierService.GetAllSuppliers();
-            ViewBag.Categories = new SelectList(categories, "Id", "Name");
-            ViewBag.Suppliers = new SelectList(suppliers, "Id", "Name");
-            return View(product);
+            var model = new ProductCreateViewModel
+            {
+                Categories = categories.Select(c => new SelectListItem
+                {
+                    Value = c.Id.ToString(),
+                    Text = c.Name
+                }).ToList(),
+                Suppliers = suppliers.Select(s => new SelectListItem
+                {
+                    Value = s.Id.ToString(),
+                    Text = s.Name
+                }).ToList()
+            };
+
+            return View(model);
         }
         [HttpPost]
-        public IActionResult Create(Product product)
+        public IActionResult Create(ProductCreateViewModel newProduct)
         {
             if (ModelState.IsValid)
             {
-                _productService.AddProduct(product);
+                _productService.AddProduct(newProduct);
                 return RedirectToAction("Index");
             }
             var categories = _categoryService.GetAllCategories();
             var suppliers = _supplierService.GetAllSuppliers();
-            ViewBag.Categories = new SelectList(categories, "Id", "Name");
-            ViewBag.Suppliers = new SelectList(suppliers, "Id", "Name");
-            return View();
+            var model = new ProductCreateViewModel
+            {
+                Categories = categories.Select(c => new SelectListItem
+                {
+                    Value = c.Id.ToString(),
+                    Text = c.Name
+                }).ToList(),
+                Suppliers = suppliers.Select(s => new SelectListItem
+                {
+                    Value = s.Id.ToString(),
+                    Text = s.Name
+                }).ToList()
+            };
+            return View(model);
 
         }
         [HttpGet]

@@ -14,7 +14,7 @@ namespace Inventory.Application.Mappings
         public MappingProfile()
         {
             CreateMap<Product, ProductViewModel>();
-            CreateMap<ProductViewModel,Product>();
+            CreateMap<ProductCreateViewModel, Product>();
         }
     }
 }

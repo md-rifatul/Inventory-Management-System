@@ -1,5 +1,6 @@
-﻿@using Inventory.Domain.Entities
-@model Product
+﻿@using Inventory.Application.DTOs
+@using Inventory.Domain.Entities
+@model ProductCreateViewModel
 
 @{
     ViewData["Title"] = "Create Product";
@@ -39,20 +40,18 @@
     </div>
 
     <div class="mb-3">
-        <label asp-for="CategoryId" class="form-label">Category</label>
-        <select asp-for="CategoryId" class="form-control"
-                asp-items="ViewBag.Categories">
+        <label asp-for="SupplierId" class="form-label">Category</label>
+        <select asp-for="SupplierId" class="form-control"
+                asp-items="Model.Suppliers">
             <option value="">-- Select Category --</option>
         </select>
-        <span asp-validation-for="CategoryId" class="text-danger"></span>
     </div>
     <div class="mb-3">
-        <label asp-for="SupplierId" class="form-label">Supplier</label>
-        <select asp-for="SupplierId" class="form-control"
-                asp-items="ViewBag.Suppliers">
+        <label asp-for="CategoryId" class="form-label">Supplier</label>
+        <select asp-for="CategoryId" class="form-control"
+                asp-items="Model.Categories">
             <option value="">-- Select Supplier --</option>
         </select>
-        <span asp-validation-for="SupplierId" class="text-danger"></span>
     </div>
 
     <button type="submit" class="btn btn-success">Save</button>

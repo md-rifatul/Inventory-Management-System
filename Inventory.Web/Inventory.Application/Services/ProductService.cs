@@ -22,9 +22,9 @@ namespace Inventory.Application.Services
             _mapper = mapper;
         }
 
-        public void AddProduct(Product productName)
-        {
-            _productRepository.Add(productName);
+        public void AddProduct(ProductCreateViewModel productName)
+        {   var product = _mapper.Map<Product>(productName);
+            _productRepository.Add(product);
             _productRepository.Save();
         }
 
