@@ -33,11 +33,11 @@
     </div>
 
     <div class="mb-3">
-        <label asp-for="purchaseOrderStatus" class="form-label">Status</label>
-        <select asp-for="purchaseOrderStatus" class="form-control"
+        <label asp-for="PurchaseOrderStatus" class="form-label">Status</label>
+        <select asp-for="PurchaseOrderStatus" class="form-control"
                 asp-items="Html.GetEnumSelectList<PurchaseOrderStatus>()">
         </select>
-        <span asp-validation-for="purchaseOrderStatus" class="text-danger"></span>
+        <span asp-validation-for="PurchaseOrderStatus" class="text-danger"></span>
     </div>
 
     <button type="submit" class="btn btn-primary">Update</button>

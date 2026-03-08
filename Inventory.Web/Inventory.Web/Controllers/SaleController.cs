@@ -22,7 +22,7 @@ namespace Inventory.Web.Controllers
             var sale = new PurchaseOrder
             {
                 OrderNumber = Guid.NewGuid().ToString(),
-                purchaseOrderStatus = PurchaseOrderStatus.Pending
+                PurchaseOrderStatus = PurchaseOrderStatus.Pending
             };
 
             var suppliers = _supplierService.GetAllSuppliers();

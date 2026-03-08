@@ -1,5 +1,6 @@
 using Inventory.Application.Interfaces.IRepository;
 using Inventory.Application.Interfaces.IServices;
+using Inventory.Application.Mappings;
 using Inventory.Application.Services;
 using Inventory.Infrastructure.Data;
 using Inventory.Infrastructure.Repository;
@@ -13,6 +14,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 //Repo
 builder.Services.AddScoped<ICategoryRepository,CategoryRepository>();
