@@ -1,5 +1,5 @@
-﻿@using Inventory.Domain.Entities
-@model Product
+﻿@using Inventory.Application.ViewModels
+@model ProductDeleteViewModel
 
 @{
     ViewData["Title"] = "Delete Product";
@@ -27,15 +27,15 @@
         <dd class="col-sm-9">@Model.QuantityOfStock</dd>
 
         <dt class="col-sm-3">Category</dt>
-        <dd class="col-sm-9">@Model.Category?.Name</dd>
+        <dd class="col-sm-9">@Model.CategoryName</dd>
 
         <dt class="col-sm-3">Supplier</dt>
-        <dd class="col-sm-9">@Model.Supplier?.Name</dd>
+        <dd class="col-sm-9">@Model.SupplierName</dd>
 
     </dl>
 </div>
 
-<form asp-action="Delete" method="post">
+<form asp-action="DeleteConfirm" method="post">
     <input type="hidden" asp-for="Id" />
 
     <button type="submit" class="btn btn-danger">

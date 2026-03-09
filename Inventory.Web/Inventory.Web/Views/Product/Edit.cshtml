@@ -1,5 +1,5 @@
-﻿@using Inventory.Domain.Entities
-@model Product
+﻿@using Inventory.Application.ViewModels
+@model ProductEditViewModel
 
 @{
     ViewData["Title"] = "Edit Product";
@@ -42,22 +42,18 @@
     </div>
 
     <div class="mb-3">
-        <label asp-for="CategoryId" class="form-label">Category</label>
-        <select asp-for="CategoryId"
-                asp-items="ViewBag.Categories"
-                class="form-control">
+        <label asp-for="SupplierId" class="form-label">Category</label>
+        <select asp-for="SupplierId" class="form-control"
+                asp-items="Model.Suppliers">
             <option value="">-- Select Category --</option>
         </select>
-        <span asp-validation-for="CategoryId" class="text-danger"></span>
     </div>
     <div class="mb-3">
-        <label asp-for="SupplierId" class="form-label">Supplier</label>
-        <select asp-for="SupplierId"
-                asp-items="ViewBag.Suppliers"
-                class="form-control">
+        <label asp-for="CategoryId" class="form-label">Supplier</label>
+        <select asp-for="CategoryId" class="form-control"
+                asp-items="Model.Categories">
             <option value="">-- Select Supplier --</option>
         </select>
-        <span asp-validation-for="SupplierId" class="text-danger"></span>
     </div>
 
     <button type="submit" class="btn btn-primary">Update</button>

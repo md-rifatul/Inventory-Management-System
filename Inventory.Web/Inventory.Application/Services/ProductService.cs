@@ -3,6 +3,7 @@ using Inventory.Application.DTOs;
 using Inventory.Application.Interfaces.IRepository;
 using Inventory.Application.Interfaces.IServices;
 using Inventory.Application.Mappings;
+using Inventory.Application.ViewModels;
 using Inventory.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -15,24 +16,21 @@ namespace Inventory.Application.Services
     public class ProductService : IProductService
     {
         private readonly IProductRepository _productRepository;
-        private readonly IMapper _mapper;
-        public ProductService(IProductRepository productRepository, IMapper mapper)
+        public ProductService(IProductRepository productRepository)
         {
             _productRepository = productRepository;
-            _mapper = mapper;
         }
 
-        public void AddProduct(ProductCreateViewModel productName)
-        {   var product = _mapper.Map<Product>(productName);
-            _productRepository.Add(product);
+        public void AddProduct(Product productName)
+        {
+            _productRepository.Add(productName);
             _productRepository.Save();
         }
 
-        public IEnumerable<ProductViewModel> GetAllProducts()
+        public IEnumerable<Product> GetAllProducts()
         {
             var products = _productRepository.GetAllIncluding(p => p.Category, s => s.Supplier);
-            var vm = _mapper.Map<IEnumerable<ProductViewModel>>(products);
-            return vm;
+            return products;
             
         }
 
@@ -45,11 +43,14 @@ namespace Inventory.Application.Services
 
         public Product GetProductById(int id)
         {
-            return _productRepository.GetByIdIncluding(id,c=>c.Category,p=>p.Supplier);
+
+            var product = _productRepository.GetByIdIncluding(id,c=>c.Category,p=>p.Supplier);
+            return product;
         }
 
-        public void RemoveProduct(Product product)
+        public void RemoveProduct(int id)
         {
+            var product = _productRepository.GetByIdIncluding(id);
             _productRepository.Delete(product);
             _productRepository.Save();
         }
@@ -64,9 +65,9 @@ namespace Inventory.Application.Services
             return products;
         }
 
-        public void UpdateProduct(Product productName)
+        public void UpdateProduct(Product product)
         {
-            _productRepository.Update(productName);
+            _productRepository.Update(product);
             _productRepository.Save();
         }
     }

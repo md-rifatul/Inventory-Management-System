@@ -1,5 +1,7 @@
-﻿using Inventory.Application.DTOs;
+﻿using AutoMapper;
+using Inventory.Application.DTOs;
 using Inventory.Application.Interfaces.IServices;
+using Inventory.Application.ViewModels;
 using Inventory.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -11,17 +13,20 @@ namespace Inventory.Web.Controllers
         private readonly IProductService _productService;
         private readonly ICategoryService _categoryService;
         private readonly ISupplierService _supplierService;
-        public ProductController(IProductService productService, ICategoryService categoryService, ISupplierService supplierService)
+        private readonly IMapper _mapper;
+        public ProductController(IProductService productService, ICategoryService categoryService, ISupplierService supplierService, IMapper mapper)
         {
             _productService = productService;
             _categoryService = categoryService;
             _supplierService = supplierService;
+            _mapper = mapper;
         }
 
         public IActionResult Index()
         {
             var products = _productService.GetAllProducts();
-            return View(products);
+            var vm = _mapper.Map<IEnumerable<ProductViewModel>>(products);
+            return View(vm);
         }
         public IActionResult Create()
         {
@@ -48,7 +53,8 @@ namespace Inventory.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                _productService.AddProduct(newProduct);
+                var product = _mapper.Map<Product>(newProduct);
+               _productService.AddProduct(product);
                 return RedirectToAction("Index");
             }
             var categories = _categoryService.GetAllCategories();
@@ -79,25 +85,59 @@ namespace Inventory.Web.Controllers
             }
             var categories = _categoryService.GetAllCategories();
             var suppliers = _supplierService.GetAllSuppliers();
-            ViewBag.Categories = new SelectList(categories,"Id","Name",product.CategoryId);
-            ViewBag.Suppliers = new SelectList(suppliers, "Id","Name",product.SupplierId);
-            return View(product);
+            var model = new ProductEditViewModel
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Sku = product.Sku,
+                UnitPrice = product.UnitPrice,
+                QuantityOfStock = product.QuantityOfStock,
+                MinimumStockLevel = product.MinimumStockLevel,
+                CategoryId = product.CategoryId,
+                SupplierId = product.SupplierId,
+                Categories = categories.Select(c => new SelectListItem
+                {
+                    Value = c.Id.ToString(),
+                    Text = c.Name,
+                    Selected = c.Id==product.CategoryId
+                }).ToList(),
+                Suppliers = suppliers.Select(s=> new SelectListItem
+                {
+                    Value = s.Id.ToString(),
+                    Text = s.Name,
+                    Selected = s.Id==product.SupplierId
+                }).ToList()
+            };
+            
+            return View(model);
         }
         [HttpPost]
-        public IActionResult Edit(Product product)
+        public IActionResult Edit(ProductEditViewModel productEditView)
         {
             if (ModelState.IsValid)
             {
-                _productService.UpdateProduct(product);
+                var product = _mapper.Map<Product>(productEditView);
+               _productService.UpdateProduct(product);
                 return RedirectToAction("Index");
             }
 
             var categories = _categoryService.GetAllCategories();
             var suppliers = _supplierService.GetAllSuppliers();
-            ViewBag.Categories = new SelectList(categories, "Id", "Name", product.CategoryId);
-            ViewBag.Suppliers = new SelectList(suppliers, "Id", "Name", product.SupplierId);
+            var model = new ProductCreateViewModel
+            {
+                Categories = categories.Select(c => new SelectListItem
+                {
+                    Value = c.Id.ToString(),
+                    Text = c.Name
+                }).ToList(),
+                Suppliers = suppliers.Select(s => new SelectListItem
+                {
+                    Value = s.Id.ToString(),
+                    Text = s.Name
+                }).ToList()
+            };
 
-            return View(product);
+            return View(model);
         }
         [HttpGet]
         public IActionResult Delete(int id)
@@ -106,18 +146,16 @@ namespace Inventory.Web.Controllers
 
             if (product == null)
                 return NotFound();
+            var vm = _mapper.Map<ProductDeleteViewModel>(product);
 
-            return View(product);
+            return View(vm);
         }
         [HttpPost]
-        public IActionResult Delete(Product product)
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteConfirm(int id)
         {
-            if (ModelState.IsValid)
-            {
-                _productService.RemoveProduct(product);
-                return RedirectToAction("Index");
-            }
-            return View(product);
+             _productService.RemoveProduct(id);
+             return RedirectToAction("Index");
         }
         [HttpGet]
         public IActionResult LowStock()
@@ -136,7 +174,7 @@ namespace Inventory.Web.Controllers
         {
             var product = _productService.GetProductById(id);
             product.QuantityOfStock += AddedQuantity;
-            _productService.UpdateProduct(product);
+            //_productService.UpdateProduct(product);
             return RedirectToAction("Index");
         }
         [HttpGet]

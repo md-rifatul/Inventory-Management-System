@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Inventory.Application.DTOs;
+using Inventory.Application.ViewModels;
 using Inventory.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,14 @@ namespace Inventory.Application.Mappings
         public MappingProfile()
         {
             CreateMap<Product, ProductViewModel>();
+            CreateMap<ProductViewModel,Product>();
+
             CreateMap<ProductCreateViewModel, Product>();
+
+            CreateMap<ProductEditViewModel, Product>();
+
+            CreateMap<ProductDeleteViewModel, Product>();
+            CreateMap<Product,ProductDeleteViewModel>();
         }
     }
 }
