@@ -5,6 +5,7 @@ using Inventory.Application.Interfaces.IServices;
 using Inventory.Application.Mappings;
 using Inventory.Application.ViewModels;
 using Inventory.Domain.Entities;
+using Inventory.Domain.Entities.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,15 +17,38 @@ namespace Inventory.Application.Services
     public class ProductService : IProductService
     {
         private readonly IProductRepository _productRepository;
-        public ProductService(IProductRepository productRepository)
+        private readonly IStockTransactionService _stockTransactionService;
+        public ProductService(IProductRepository productRepository, IStockTransactionService stockTransactionService)
         {
             _productRepository = productRepository;
+            _stockTransactionService = stockTransactionService;
         }
 
         public void AddProduct(Product productName)
         {
             _productRepository.Add(productName);
             _productRepository.Save();
+        }
+
+        public void AddStock(int productId, int quantity)
+        {
+            if (quantity > 0)
+            {
+                var product = GetProductById(productId);
+                if (product == null)
+                    return;
+                product.QuantityOfStock += quantity;
+                var transaction = new StockTransaction
+                {
+                    ProductId = productId,
+                    Quantity = quantity,
+                    BlanceAfter = product.QuantityOfStock,
+                    TransactionType = TransactionType.Purchase,
+                };
+                _stockTransactionService.Add(transaction);
+                _productRepository.Save();
+            }
+            return;
         }
 
         public IEnumerable<Product> GetAllProducts()

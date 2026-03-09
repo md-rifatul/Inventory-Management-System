@@ -25,6 +25,11 @@ namespace Inventory.Application.Mappings
             CreateMap<Product,ProductDeleteViewModel>();
 
             CreateMap<Product, ProductViewLowStock>();
+
+            CreateMap<Product, AddStockViewModel>()
+    .ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.Id))
+    .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Name))
+    .ForMember(dest => dest.CurrentStock, opt => opt.MapFrom(src => src.QuantityOfStock));
         }
     }
 }

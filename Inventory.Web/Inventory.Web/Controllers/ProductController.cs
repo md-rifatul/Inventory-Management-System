@@ -165,17 +165,20 @@ namespace Inventory.Web.Controllers
             return View(vm);
         }
         [HttpGet]
-        public IActionResult Add(int id)
+        public IActionResult AddStock(int id)
         {
             var product = _productService.GetProductById(id);
-            return View(product);
+            var vm = _mapper.Map<AddStockViewModel>(product);
+            return View(vm);
         }
         [HttpPost]
-        public IActionResult Add(int id, int AddedQuantity)
+        public IActionResult AddStock(AddStockViewModel addStockViewModel)
         {
-            var product = _productService.GetProductById(id);
-            product.QuantityOfStock += AddedQuantity;
-            //_productService.UpdateProduct(product);
+            if (!ModelState.IsValid)
+            {
+                return View(addStockViewModel);
+            }
+            _productService.AddStock(addStockViewModel.ProductId, addStockViewModel.AddQuantity);
             return RedirectToAction("Index");
         }
         [HttpGet]
