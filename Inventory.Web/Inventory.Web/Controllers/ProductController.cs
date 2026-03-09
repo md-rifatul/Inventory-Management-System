@@ -185,7 +185,8 @@ namespace Inventory.Web.Controllers
         public IActionResult Search(string productName)
         {
             var products = _productService.SearchProducts(productName);
-            return View("Index", products);
+            var vm = _mapper.Map<IEnumerable<ProductViewModel>>(products);
+            return View("Index", vm);
         }
     }
 }
