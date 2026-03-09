@@ -79,38 +79,31 @@ namespace Inventory.Web.Controllers
         public IActionResult Edit(int id)
         {
             var product = _productService.GetProductById(id);
-            if(product == null)
-            {
+            if (product == null)
                 return NotFound();
-            }
+
             var categories = _categoryService.GetAllCategories();
             var suppliers = _supplierService.GetAllSuppliers();
-            var model = new ProductEditViewModel
+
+            var vm = _mapper.Map<ProductEditViewModel>(product);
+
+            vm.Categories = categories.Select(c => new SelectListItem
             {
-                Id = product.Id,
-                Name = product.Name,
-                Sku = product.Sku,
-                UnitPrice = product.UnitPrice,
-                QuantityOfStock = product.QuantityOfStock,
-                MinimumStockLevel = product.MinimumStockLevel,
-                CategoryId = product.CategoryId,
-                SupplierId = product.SupplierId,
-                Categories = categories.Select(c => new SelectListItem
-                {
-                    Value = c.Id.ToString(),
-                    Text = c.Name,
-                    Selected = c.Id==product.CategoryId
-                }).ToList(),
-                Suppliers = suppliers.Select(s=> new SelectListItem
-                {
-                    Value = s.Id.ToString(),
-                    Text = s.Name,
-                    Selected = s.Id==product.SupplierId
-                }).ToList()
-            };
-            
-            return View(model);
+                Value = c.Id.ToString(),
+                Text = c.Name,
+                Selected = c.Id == product.CategoryId
+            }).ToList();
+
+            vm.Suppliers = suppliers.Select(s => new SelectListItem
+            {
+                Value = s.Id.ToString(),
+                Text = s.Name,
+                Selected = s.Id == product.SupplierId
+            }).ToList();
+
+            return View(vm);
         }
+
         [HttpPost]
         public IActionResult Edit(ProductEditViewModel productEditView)
         {

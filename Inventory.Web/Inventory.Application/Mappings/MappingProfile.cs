@@ -20,6 +20,7 @@ namespace Inventory.Application.Mappings
             CreateMap<ProductCreateViewModel, Product>();
 
             CreateMap<ProductEditViewModel, Product>();
+            CreateMap<Product,ProductEditViewModel>();
 
             CreateMap<ProductDeleteViewModel, Product>();
             CreateMap<Product,ProductDeleteViewModel>();
