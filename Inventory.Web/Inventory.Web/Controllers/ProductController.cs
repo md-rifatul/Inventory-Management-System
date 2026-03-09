@@ -161,7 +161,8 @@ namespace Inventory.Web.Controllers
         public IActionResult LowStock()
         {
             var products = _productService.GetMinimumStockLevels();
-            return View(products);
+            var vm = _mapper.Map<IEnumerable<ProductViewLowStock>>(products);
+            return View(vm);
         }
         [HttpGet]
         public IActionResult Add(int id)

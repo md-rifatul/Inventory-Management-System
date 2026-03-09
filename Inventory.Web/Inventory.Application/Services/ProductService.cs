@@ -36,7 +36,7 @@ namespace Inventory.Application.Services
 
         public IEnumerable<Product> GetMinimumStockLevels()
         {
-            var products = _productRepository.GetAllIncluding(x=>x.Category)
+            var products = _productRepository.GetAllIncluding(x=>x.Category,x=>x.Supplier)
                 .Where(x => x.QuantityOfStock <= x.MinimumStockLevel);
             return products;
         }
