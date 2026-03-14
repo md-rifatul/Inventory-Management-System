@@ -15,14 +15,17 @@ namespace Inventory.Infrastructure.Data
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<StockTransaction> StockTransactions { get; set; }
         public DbSet<PurchaseOrder> PurchaseOrders { get; set; }
-        public DbSet<PurchaseOrderItems> PurchaseOrderItems { get; set; }
+        public DbSet<PurchaseOrderItem> PurchaseOrderItems { get; set; }
+        public DbSet<SalesOrder> SalesOrders { get; set; }
+        public DbSet<SalesOrderItem> SalesOrderItems { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
             // ✅ PurchaseOrder (1) -> PurchaseOrderItems (Many)
-            modelBuilder.Entity<PurchaseOrderItems>()
+            modelBuilder.Entity<PurchaseOrderItem>()
                 .HasOne(x => x.PurchaseOrder)
                 .WithMany(x => x.PurchaseOrderItems)
                 .HasForeignKey(x => x.PurchaseOrderId)
@@ -30,7 +33,7 @@ namespace Inventory.Infrastructure.Data
 
             // ✅ Product (1) -> PurchaseOrderItems (Many)
             // Prevent multiple cascade paths
-            modelBuilder.Entity<PurchaseOrderItems>()
+            modelBuilder.Entity<PurchaseOrderItem>()
                 .HasOne(x => x.Product)
                 .WithMany() // if Product doesn't have collection
                 .HasForeignKey(x => x.ProductId)

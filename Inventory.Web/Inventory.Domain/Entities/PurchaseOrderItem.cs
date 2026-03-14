@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Inventory.Domain.Entities
 {
-    public class PurchaseOrderItems
+    public class PurchaseOrderItem
     {
         public int Id { get; set; }
         public int Quantity { get; set; }
