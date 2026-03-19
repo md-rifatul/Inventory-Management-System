@@ -23,6 +23,8 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ISupplierRepository, SupplierRepository>();
 builder.Services.AddScoped<IStockTransactionRepository, StockTransactionRepository>();
 builder.Services.AddScoped<IPurchaseOrderRepository,PurchaseOrderRepository>();
+builder.Services.AddScoped<ISalesOrderRepository,SalesOrderRepository>();
+builder.Services.AddScoped<ISalesOrderItemRepository,SalesOrderItemRepository>();
 
 //Services
 builder.Services.AddScoped<ICategoryService,CategoryService>();
@@ -30,6 +32,7 @@ builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ISupplierService, SupplierService>();
 builder.Services.AddScoped<IStockTransactionService, StockTransactionService>();
 builder.Services.AddScoped<IPurchaseOrderService,PurchaseOrderService>();
+builder.Services.AddScoped<ISalesOrderService,SalesOrderService>();
 
 var app = builder.Build();
 

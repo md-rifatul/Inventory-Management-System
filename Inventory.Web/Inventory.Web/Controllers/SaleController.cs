@@ -1,4 +1,5 @@
 ﻿using Inventory.Application.Interfaces.IServices;
+using Inventory.Application.ViewModels;
 using Inventory.Domain.Entities;
 using Inventory.Domain.Entities.Enums;
 using Microsoft.AspNetCore.Mvc;
@@ -11,30 +12,35 @@ namespace Inventory.Web.Controllers
     {
         private readonly IProductService _productService;
         private readonly ISupplierService _supplierService;
-        public SaleController(IProductService productService, ISupplierService supplierService)
+        private readonly ISalesOrderService _salesOrderService;
+        public SaleController(IProductService productService, ISupplierService supplierService, ISalesOrderService salesOrderService)
         {
             _productService = productService;
             _supplierService = supplierService;
+            _salesOrderService = salesOrderService;
         }
         [HttpGet]
-        public IActionResult CreateSale()
+        public IActionResult GetProduct(int Id)
         {
-            var sale = new PurchaseOrder
+            var product = _productService.GetProductById(Id);
+            var vm = new CreateSalesOrderViewModel
             {
-                OrderNumber = Guid.NewGuid().ToString(),
-                PurchaseOrderStatus = PurchaseOrderStatus.Pending
+                ProductId = product.Id,
+                ProductName = product.Name,
+                UnitPrice = product.UnitPrice
             };
-
-            var suppliers = _supplierService.GetAllSuppliers();
-
-            ViewBag.Suppliers = new SelectList(suppliers, "Id", "Name");
-            return View(sale);
+            return View(vm);
         }
 
-        //[HttpPost]
-        //public IActionResult PendingSale(PurchaseOrder purchaseOrder)
-        //{
-        //    purchaseOrder.purchaseOrderStatus = PurchaseOrderStatus.Pending;
-        //}
+        [HttpPost]
+        public IActionResult GetProuct(CreateSalesOrderViewModel createSalesOrderViewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(createSalesOrderViewModel);
+            }
+            _salesOrderService.AddSaleOrder(createSalesOrderViewModel);
+            return RedirectToAction("Index", "Product");
+        }
     }
 }

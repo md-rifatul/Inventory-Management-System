@@ -15,7 +15,7 @@ namespace Inventory.Domain.Entities
         public decimal TotalAmount { get; set; }
         public SalesOrderStatus SalesOrderStatus { get; set; }
 
-        public List<SalesOrderItem> SealsOrderItem { get; set; }
+        public List<SalesOrderItem> SealsOrderItems { get; set; } = new List<SalesOrderItem>();
 
     }
 }

@@ -1,33 +1,35 @@
-﻿@using Inventory.Domain.Entities
-@model PurchaseOrder
+﻿@using Inventory.Application.ViewModels
+@using Inventory.Domain.Entities;
+@model CreateSalesOrderViewModel
 
 @{
     ViewData["Title"] = "Create Sale";
 }
 
-<h2>Create Sale</h2>
+<form asp-action="GetProuct">
 
-<form asp-controller="Sale" asp-action="CreateSale" method="post">
-    <div class="form-group">
-        <label for="OrderNumber">Order Number</label>
-        <input type="text" class="form-control" id="OrderNumber" name="OrderNumber" value="@Model.OrderNumber" readonly />
+    <input type="hidden" asp-for="ProductId" />
+
+    <div>
+        <label>Product</label>
+        <input asp-for="ProductName" readonly />
     </div>
 
-    <div class="form-group">
-        <label for="SupplierId">Supplier</label>
-        <select asp-for="SupplierId" asp-items="ViewBag.Suppliers" class="form-control"></select>
+    <div>
+        <label>Customer Name</label>
+        <input asp-for="CustomerName" />
     </div>
 
-    <div class="form-group">
-        <label>Total Amount</label>
-        <input asp-for="TotalAmount" class="form-control" />
+    <div>
+        <label>Address</label>
+        <input asp-for="Address" />
     </div>
 
-    <div class="form-group">
-        <label>Status</label>
-        <input type="text" class="form-control" value="Pending" readonly />
+    <div>
+        <label>Quantity</label>
+        <input asp-for="Quantity" />
     </div>
 
-    <button type="submit" class="btn btn-primary">Confirm Sale</button>
-    <a asp-controller="Product" asp-action="Index" class="btn btn-secondary">Back</a>
+    <button type="submit">Submit</button>
+
 </form>
