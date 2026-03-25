@@ -2,6 +2,7 @@
 using Inventory.Application.DTOs;
 using Inventory.Application.ViewModels;
 using Inventory.Domain.Entities;
+using Inventory.Domain.Entities.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,9 +34,17 @@ namespace Inventory.Application.Mappings
             CreateMap<Product, ProductViewLowStock>();
 
             CreateMap<Product, AddStockViewModel>()
-    .ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.Id))
-    .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Name))
-    .ForMember(dest => dest.CurrentStock, opt => opt.MapFrom(src => src.QuantityOfStock));
+                .ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Name))
+                .ForMember(dest => dest.CurrentStock, opt => opt.MapFrom(src => src.QuantityOfStock));
+
+
+            CreateMap<CreateSalesOrderViewModel, SalesOrder>()
+                .ForMember(dest => dest.OrderNumber, opt => opt.MapFrom(src => Guid.NewGuid().ToString()))
+                .ForMember(dest => dest.TotalAmount, opt => opt.MapFrom(src => src.Quantity * src.UnitPrice))
+                .ForMember(dest => dest.SalesOrderStatus, opt => opt.MapFrom(src => SalesOrderStatus.Pending));
+
+            CreateMap<CreateSalesOrderViewModel, SalesOrderItem>();
         }
     }
 }

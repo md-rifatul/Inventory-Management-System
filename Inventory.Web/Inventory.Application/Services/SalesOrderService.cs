@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using Inventory.Application.Interfaces.IRepository;
 using Inventory.Application.Interfaces.IServices;
 using Inventory.Application.ViewModels;
@@ -15,31 +16,22 @@ namespace Inventory.Application.Services
     {
         private readonly ISalesOrderRepository _salesOrderRepository;
         private readonly ISalesOrderItemRepository _salesOrderItemRepository;
-        public SalesOrderService(ISalesOrderRepository salesOrderRepository, ISalesOrderItemRepository salesOrderItemRepository)
+        private readonly IMapper _mapper;
+        public SalesOrderService(ISalesOrderRepository salesOrderRepository, ISalesOrderItemRepository salesOrderItemRepository, IMapper mapper)
         {
             _salesOrderRepository = salesOrderRepository;
             _salesOrderItemRepository = salesOrderItemRepository;
+            _mapper = mapper;
         }
 
         public void AddSaleOrder(CreateSalesOrderViewModel createSalesOrderViewModel)
         {
-
             //create sales order
-            var salesOrder = new SalesOrder
-            {
-                OrderNumber = Guid.NewGuid().ToString(),
-                CustomerName = createSalesOrderViewModel.CustomerName,
-                TotalAmount = createSalesOrderViewModel.Quantity*createSalesOrderViewModel.UnitPrice,
-                SalesOrderStatus = SalesOrderStatus.Pending
-            };
+            var salesOrder = _mapper.Map<SalesOrder>(createSalesOrderViewModel);
 
             //create salesOrderItems
-            var salesOrderItem = new SalesOrderItem
-            {
-                ProductId = createSalesOrderViewModel.ProductId,
-                Quantity = createSalesOrderViewModel.Quantity,
-                UnitPrice = createSalesOrderViewModel.UnitPrice
-            };
+            var salesOrderItem = _mapper.Map<SalesOrderItem>(createSalesOrderViewModel);
+
 
             salesOrder.SealsOrderItems.Add(salesOrderItem);
 
