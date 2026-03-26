@@ -2,6 +2,7 @@
 using Inventory.Application.ViewModels;
 using Inventory.Application.ViewModels.Products;
 using Inventory.Application.ViewModels.Sales;
+using Inventory.Application.ViewModels.SalesOrder;
 using Inventory.Domain.Entities;
 using Inventory.Domain.Entities.Enums;
 using System;
@@ -46,6 +47,9 @@ namespace Inventory.Application.Mappings
                 .ForMember(dest => dest.SalesOrderStatus, opt => opt.MapFrom(src => SalesOrderStatus.Pending));
 
             CreateMap<CreateSalesOrderViewModel, SalesOrderItem>();
+
+            CreateMap<SalesOrder, SalesOrderSummaryViewModel>()
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.SalesOrderStatus.ToString()));
         }
     }
 }
