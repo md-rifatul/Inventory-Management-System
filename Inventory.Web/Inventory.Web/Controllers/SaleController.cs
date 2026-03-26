@@ -1,5 +1,5 @@
 ﻿using Inventory.Application.Interfaces.IServices;
-using Inventory.Application.ViewModels;
+using Inventory.Application.ViewModels.Sales;
 using Inventory.Domain.Entities;
 using Inventory.Domain.Entities.Enums;
 using Microsoft.AspNetCore.Mvc;

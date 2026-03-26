@@ -1,5 +1,4 @@
-﻿using Inventory.Application.DTOs;
-using Inventory.Application.ViewModels;
+﻿using Inventory.Application.ViewModels;
 using Inventory.Domain.Entities;
 using System;
 using System.Collections.Generic;

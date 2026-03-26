@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Inventory.Application.DTOs;
 using Inventory.Application.Interfaces.IRepository;
 using Inventory.Application.Interfaces.IServices;
 using Inventory.Application.Mappings;

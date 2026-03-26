@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Inventory.Application.ViewModels
+namespace Inventory.Application.ViewModels.Sales
 {
     public class CreateSalesOrderViewModel
     {

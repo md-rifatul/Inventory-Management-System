@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using Inventory.Application.DTOs;
 using Inventory.Application.Interfaces.IServices;
 using Inventory.Application.ViewModels;
+using Inventory.Application.ViewModels.Products;
 using Inventory.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
-using Inventory.Application.DTOs;
 using Inventory.Application.ViewModels;
+using Inventory.Application.ViewModels.Products;
+using Inventory.Application.ViewModels.Sales;
 using Inventory.Domain.Entities;
 using Inventory.Domain.Entities.Enums;
 using System;
