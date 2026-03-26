@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Inventory.Application.Interfaces.IRepository;
 using Inventory.Application.Interfaces.IServices;
 using Inventory.Domain.Entities;
+using Inventory.Domain.Entities.Enums;
 
 namespace Inventory.Application.Services
 {
@@ -24,12 +25,14 @@ namespace Inventory.Application.Services
 
         public SalesOrder GetSalesOrderById(int id)
         {
-            return _salesOrderRepository.GetByIdIncluding(id);
+            return _salesOrderRepository.GetByIdIncluding(id, s=>s.SealsOrderItems);
         }
 
-        public void UpdateSalesOrder(SalesOrder salesOrder)
+        public void UpdateSalesOrder(int id)
         {
-            _salesOrderRepository.Update(salesOrder);
+            var order = GetSalesOrderById(id);
+            order.SalesOrderStatus = SalesOrderStatus.Coompleted;
+            _salesOrderRepository.Update(order);
             _salesOrderRepository.Save();
         }
     }

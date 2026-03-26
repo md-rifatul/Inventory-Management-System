@@ -11,6 +11,6 @@ namespace Inventory.Application.Interfaces.IServices
     {
         IEnumerable<SalesOrder> GetAllSalesOrder();
         SalesOrder GetSalesOrderById(int id);
-        void UpdateSalesOrder(SalesOrder salesOrder);
+        void UpdateSalesOrder(int id);
     }
 }
