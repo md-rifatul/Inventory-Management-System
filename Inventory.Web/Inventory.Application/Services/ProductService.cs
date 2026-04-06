@@ -50,6 +50,27 @@ namespace Inventory.Application.Services
             return;
         }
 
+        public void RemoveStock(int productId, int quantity)
+        {
+            if (quantity > 0)
+            {
+                var product = GetProductById(productId);
+                if (product == null)
+                    return;
+                product.QuantityOfStock -= quantity;
+                var transaction = new StockTransaction
+                {
+                    ProductId = productId,
+                    Quantity = quantity,
+                    BlanceAfter = product.QuantityOfStock,
+                    TransactionType = TransactionType.Sale,
+                };
+                _stockTransactionService.Add(transaction);
+                _productRepository.Save();
+            }
+            return;
+        }
+
         public IEnumerable<Product> GetAllProducts()
         {
             var products = _productRepository.GetAllIncluding(p => p.Category, s => s.Supplier);

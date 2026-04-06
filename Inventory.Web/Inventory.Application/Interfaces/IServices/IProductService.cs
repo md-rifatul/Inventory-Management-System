@@ -18,5 +18,6 @@ namespace Inventory.Application.Interfaces.IServices
         IEnumerable<Product> GetMinimumStockLevels();
         IEnumerable<Product> SearchProducts(string search);
         void AddStock(int productId, int quantity);
+        void RemoveStock(int productId, int quantity);
     }
 }

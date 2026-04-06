@@ -9,10 +9,12 @@ namespace Inventory.Web.Controllers
     {
         private readonly IOrderConfirmationService _orderConfirmationService;
         private readonly IMapper _mapper;
-        public OrderController(IOrderConfirmationService orderConfirmationService, IMapper mapper)
+        private readonly IProductService _productService;
+        public OrderController(IOrderConfirmationService orderConfirmationService, IMapper mapper, IProductService productService)
         {
             _orderConfirmationService = orderConfirmationService;
             _mapper = mapper;
+            _productService = productService;
         }
 
         [HttpGet]
@@ -26,6 +28,12 @@ namespace Inventory.Web.Controllers
         public IActionResult ConfirmOrder(int Id)
         {
             _orderConfirmationService.UpdateSalesOrder(Id);
+            var order = _orderConfirmationService.GetSalesOrderById(Id);
+
+            foreach (var item in order.SealsOrderItems)
+            {
+                _productService.RemoveStock(item.ProductId, item.Quantity);
+            }
             return RedirectToAction("Index");
         }
         [HttpGet]
