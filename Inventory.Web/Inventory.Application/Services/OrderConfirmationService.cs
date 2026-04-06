@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,25 +19,27 @@ namespace Inventory.Application.Services
             _salesOrderRepository = salesOrderRepository;
         }
 
-        public IEnumerable<SalesOrder> GetAllSalesOrder()
+        public async Task<IEnumerable<SalesOrder>> GetAllSalesOrderAsync()
         {
-            return _salesOrderRepository.GetAllIncluding();
+            return await _salesOrderRepository.GetAllIncludingAsync();
         }
 
-        public SalesOrder GetSalesOrderById(int id)
+        public Task<SalesOrder?> GetSalesOrderByIdAsync(int id)
         {
             return _salesOrderRepository.GetQueryable()
             .Include(s => s.SealsOrderItems)      // Level 1: Get the list of items
             .ThenInclude(i => i.Product)      // Level 2: Get the Product for EACH item
-        .FirstOrDefault(s => s.Id == id);
+        .FirstOrDefaultAsync(s => s.Id == id);
         }
 
-        public void UpdateSalesOrder(int id)
+        public async Task UpdateSalesOrderAsync(int id)
         {
-            var order = GetSalesOrderById(id);
+            var order = await GetSalesOrderByIdAsync(id);
+            if (order == null)
+                return;
             order.SalesOrderStatus = SalesOrderStatus.Coompleted;
             _salesOrderRepository.Update(order);
-            _salesOrderRepository.Save();
+            await _salesOrderRepository.SaveAsync();
         }
     }
 }

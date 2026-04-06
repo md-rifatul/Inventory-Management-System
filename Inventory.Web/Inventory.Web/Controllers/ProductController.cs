@@ -1,10 +1,11 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Inventory.Application.Interfaces.IServices;
 using Inventory.Application.ViewModels;
 using Inventory.Application.ViewModels.Products;
 using Inventory.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Threading.Tasks;
 
 namespace Inventory.Web.Controllers
 {
@@ -22,16 +23,16 @@ namespace Inventory.Web.Controllers
             _mapper = mapper;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var products = _productService.GetAllProducts();
+            var products = await _productService.GetAllProductsAsync();
             var vm = _mapper.Map<IEnumerable<ProductViewModel>>(products);
             return View(vm);
         }
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            var categories = _categoryService.GetAllCategories();
-            var suppliers = _supplierService.GetAllSuppliers();
+            var categories = await _categoryService.GetAllCategoriesAsync();
+            var suppliers = await _supplierService.GetAllSuppliersAsync();
             var model = new ProductCreateViewModel
             {
                 Categories = categories.Select(c => new SelectListItem
@@ -49,16 +50,16 @@ namespace Inventory.Web.Controllers
             return View(model);
         }
         [HttpPost]
-        public IActionResult Create(ProductCreateViewModel newProduct)
+        public async Task<IActionResult> Create(ProductCreateViewModel newProduct)
         {
             if (ModelState.IsValid)
             {
                 var product = _mapper.Map<Product>(newProduct);
-               _productService.AddProduct(product);
+                await _productService.AddProductAsync(product);
                 return RedirectToAction("Index");
             }
-            var categories = _categoryService.GetAllCategories();
-            var suppliers = _supplierService.GetAllSuppliers();
+            var categories = await _categoryService.GetAllCategoriesAsync();
+            var suppliers = await _supplierService.GetAllSuppliersAsync();
             var model = new ProductCreateViewModel
             {
                 Categories = categories.Select(c => new SelectListItem
@@ -76,14 +77,14 @@ namespace Inventory.Web.Controllers
 
         }
         [HttpGet]
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var product = _productService.GetProductById(id);
+            var product = await _productService.GetProductByIdAsync(id);
             if (product == null)
                 return NotFound();
 
-            var categories = _categoryService.GetAllCategories();
-            var suppliers = _supplierService.GetAllSuppliers();
+            var categories = await _categoryService.GetAllCategoriesAsync();
+            var suppliers = await _supplierService.GetAllSuppliersAsync();
 
             var vm = _mapper.Map<ProductEditViewModel>(product);
 
@@ -105,17 +106,17 @@ namespace Inventory.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(ProductEditViewModel productEditView)
+        public async Task<IActionResult> Edit(ProductEditViewModel productEditView)
         {
             if (ModelState.IsValid)
             {
                 var product = _mapper.Map<Product>(productEditView);
-               _productService.UpdateProduct(product);
+                await _productService.UpdateProductAsync(product);
                 return RedirectToAction("Index");
             }
 
-            var categories = _categoryService.GetAllCategories();
-            var suppliers = _supplierService.GetAllSuppliers();
+            var categories = await _categoryService.GetAllCategoriesAsync();
+            var suppliers = await _supplierService.GetAllSuppliersAsync();
             var model = new ProductCreateViewModel
             {
                 Categories = categories.Select(c => new SelectListItem
@@ -133,9 +134,9 @@ namespace Inventory.Web.Controllers
             return View(model);
         }
         [HttpGet]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var product = _productService.GetProductById(id);
+            var product = await _productService.GetProductByIdAsync(id);
 
             if (product == null)
                 return NotFound();
@@ -145,39 +146,39 @@ namespace Inventory.Web.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirm(int id)
+        public async Task<IActionResult> DeleteConfirm(int id)
         {
-             _productService.RemoveProduct(id);
-             return RedirectToAction("Index");
+            await _productService.RemoveProductAsync(id);
+            return RedirectToAction("Index");
         }
         [HttpGet]
-        public IActionResult LowStock()
+        public async Task<IActionResult> LowStock()
         {
-            var products = _productService.GetMinimumStockLevels();
+            var products = await _productService.GetMinimumStockLevelsAsync();
             var vm = _mapper.Map<IEnumerable<ProductViewLowStock>>(products);
             return View(vm);
         }
         [HttpGet]
-        public IActionResult AddStock(int id)
+        public async Task<IActionResult> AddStock(int id)
         {
-            var product = _productService.GetProductById(id);
+            var product = await _productService.GetProductByIdAsync(id);
             var vm = _mapper.Map<AddStockViewModel>(product);
             return View(vm);
         }
         [HttpPost]
-        public IActionResult AddStock(AddStockViewModel addStockViewModel)
+        public async Task<IActionResult> AddStock(AddStockViewModel addStockViewModel)
         {
             if (!ModelState.IsValid)
             {
                 return View(addStockViewModel);
             }
-            _productService.AddStock(addStockViewModel.ProductId, addStockViewModel.AddQuantity);
+            await _productService.AddStockAsync(addStockViewModel.ProductId, addStockViewModel.AddQuantity);
             return RedirectToAction("Index");
         }
         [HttpGet]
-        public IActionResult Search(string productName)
+        public async Task<IActionResult> Search(string productName)
         {
-            var products = _productService.SearchProducts(productName);
+            var products = await _productService.SearchProductsAsync(productName);
             var vm = _mapper.Map<IEnumerable<ProductViewModel>>(products);
             return View("Index", vm);
         }

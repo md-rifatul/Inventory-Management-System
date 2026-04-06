@@ -1,10 +1,11 @@
-﻿using Inventory.Application.Interfaces.IServices;
+using Inventory.Application.Interfaces.IServices;
 using Inventory.Application.ViewModels.Sales;
 using Inventory.Domain.Entities;
 using Inventory.Domain.Entities.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace Inventory.Web.Controllers
 {
@@ -20,9 +21,11 @@ namespace Inventory.Web.Controllers
             _salesOrderService = salesOrderService;
         }
         [HttpGet]
-        public IActionResult GetProduct(int Id)
+        public async Task<IActionResult> GetProduct(int Id)
         {
-            var product = _productService.GetProductById(Id);
+            var product = await _productService.GetProductByIdAsync(Id);
+            if (product == null)
+                return NotFound();
             var vm = new CreateSalesOrderViewModel
             {
                 ProductId = product.Id,
@@ -33,13 +36,13 @@ namespace Inventory.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult GetProuct(CreateSalesOrderViewModel createSalesOrderViewModel)
+        public async Task<IActionResult> GetProuct(CreateSalesOrderViewModel createSalesOrderViewModel)
         {
             if (!ModelState.IsValid)
             {
                 return View(createSalesOrderViewModel);
             }
-            _salesOrderService.AddSaleOrder(createSalesOrderViewModel);
+            await _salesOrderService.AddSaleOrderAsync(createSalesOrderViewModel);
             return RedirectToAction("Index", "Product");
         }
     }

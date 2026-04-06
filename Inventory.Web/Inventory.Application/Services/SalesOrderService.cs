@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,7 +24,7 @@ namespace Inventory.Application.Services
             _mapper = mapper;
         }
 
-        public void AddSaleOrder(CreateSalesOrderViewModel createSalesOrderViewModel)
+        public async Task AddSaleOrderAsync(CreateSalesOrderViewModel createSalesOrderViewModel)
         {
             //create sales order
             var salesOrder = _mapper.Map<SalesOrder>(createSalesOrderViewModel);
@@ -36,7 +36,7 @@ namespace Inventory.Application.Services
             salesOrder.SealsOrderItems.Add(salesOrderItem);
 
             _salesOrderRepository.Add(salesOrder);
-            _salesOrderRepository.Save();
+            await _salesOrderRepository.SaveAsync();
         }
     }
 }

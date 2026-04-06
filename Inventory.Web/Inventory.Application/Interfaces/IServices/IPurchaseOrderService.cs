@@ -1,4 +1,4 @@
-﻿using Inventory.Domain.Entities;
+using Inventory.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +9,10 @@ namespace Inventory.Application.Interfaces.IServices
 {
     public interface IPurchaseOrderService
     {
-        IEnumerable<PurchaseOrder> GetAllPurchaseOrders();
-        void AddPurchaseOrder(PurchaseOrder purchaseOrder);
-        void RemovePurchaseOrder(PurchaseOrder purchaseOrder);
-        void UpdatePurchaseOrder(PurchaseOrder purchaseOrder);
-        PurchaseOrder GetPurchaseOrder(int id);
+        Task<IEnumerable<PurchaseOrder>> GetAllPurchaseOrdersAsync();
+        Task AddPurchaseOrderAsync(PurchaseOrder purchaseOrder);
+        Task RemovePurchaseOrderAsync(PurchaseOrder purchaseOrder);
+        Task UpdatePurchaseOrderAsync(PurchaseOrder purchaseOrder);
+        Task<PurchaseOrder?> GetPurchaseOrderAsync(int id);
     }
 }

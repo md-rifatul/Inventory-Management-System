@@ -1,4 +1,4 @@
-﻿using Inventory.Application.Interfaces.IRepository;
+using Inventory.Application.Interfaces.IRepository;
 using Inventory.Application.Interfaces.IServices;
 using Inventory.Domain.Entities;
 using System;
@@ -17,15 +17,15 @@ namespace Inventory.Application.Services
             _stockTransactionRepository = stockTransactionRepository;
         }
 
-        public void Add(StockTransaction transaction)
+        public async Task AddAsync(StockTransaction transaction)
         {
             _stockTransactionRepository.Add(transaction);
-            _stockTransactionRepository.Save();
+            await _stockTransactionRepository.SaveAsync();
         }
 
-        public IEnumerable<StockTransaction> GetStockTransactions()
+        public async Task<IEnumerable<StockTransaction>> GetStockTransactionsAsync()
         {
-            return _stockTransactionRepository.GetAllIncluding(x => x.Product);
+            return await _stockTransactionRepository.GetAllIncludingAsync(x => x.Product);
         }
     }
 }

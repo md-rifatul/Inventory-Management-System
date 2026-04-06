@@ -1,7 +1,8 @@
-﻿using Inventory.Application.Interfaces.IServices;
+using Inventory.Application.Interfaces.IServices;
 using Inventory.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Threading.Tasks;
 
 namespace Inventory.Web.Controllers
 {
@@ -16,69 +17,69 @@ namespace Inventory.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var purchaseOrders = _purchaseOrderService.GetAllPurchaseOrders();
+            var purchaseOrders = await _purchaseOrderService.GetAllPurchaseOrdersAsync();
             return View(purchaseOrders);
         }
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            var suppliers = _supplierService.GetAllSuppliers();
+            var suppliers = await _supplierService.GetAllSuppliersAsync();
             ViewBag.Suppliers = new SelectList(suppliers, "Id", "Name");
             return View();
         }
         [HttpPost]
-        public IActionResult Create(PurchaseOrder purchaseOrder)
+        public async Task<IActionResult> Create(PurchaseOrder purchaseOrder)
         {
             if (ModelState.IsValid)
             {
-                _purchaseOrderService.AddPurchaseOrder(purchaseOrder);
+                await _purchaseOrderService.AddPurchaseOrderAsync(purchaseOrder);
                 return RedirectToAction("Index");
             }
-            var suppliers = _supplierService.GetAllSuppliers();
+            var suppliers = await _supplierService.GetAllSuppliersAsync();
             ViewBag.Suppliers = new SelectList(suppliers, "Id", "Name");
             return View(suppliers);
 
         }
         [HttpGet]
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var purchaseOrders = _purchaseOrderService.GetPurchaseOrder(id);
-            var suppliers = _supplierService.GetAllSuppliers();
+            var purchaseOrders = await _purchaseOrderService.GetPurchaseOrderAsync(id);
+            var suppliers = await _supplierService.GetAllSuppliersAsync();
             ViewBag.Suppliers = new SelectList(suppliers, "Id", "Name");
             return View(purchaseOrders);
         }
         [HttpPost]
-        public IActionResult Edit(PurchaseOrder purchaseOrder)
+        public async Task<IActionResult> Edit(PurchaseOrder purchaseOrder)
         {
             if (ModelState.IsValid)
             {
-                _purchaseOrderService.UpdatePurchaseOrder(purchaseOrder);
+                await _purchaseOrderService.UpdatePurchaseOrderAsync(purchaseOrder);
                 return RedirectToAction("Index");
             }
-            var suppliers = _supplierService.GetAllSuppliers();
+            var suppliers = await _supplierService.GetAllSuppliersAsync();
             ViewBag.Suppliers = new SelectList(suppliers, "Id", "Name");
             return View(suppliers);
 
         }
         [HttpGet]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var purchaseOrders = _purchaseOrderService.GetPurchaseOrder(id);
-            var suppliers = _supplierService.GetAllSuppliers();
+            var purchaseOrders = await _purchaseOrderService.GetPurchaseOrderAsync(id);
+            var suppliers = await _supplierService.GetAllSuppliersAsync();
             ViewBag.Suppliers = new SelectList(suppliers, "Id", "Name");
             return View(purchaseOrders);
         }
         [HttpPost]
-        public IActionResult Delete(PurchaseOrder purchaseOrder)
+        public async Task<IActionResult> Delete(PurchaseOrder purchaseOrder)
         {
             if (ModelState.IsValid)
             {
-                _purchaseOrderService.RemovePurchaseOrder(purchaseOrder);
+                await _purchaseOrderService.RemovePurchaseOrderAsync(purchaseOrder);
                 return RedirectToAction("Index");
             }
-            var suppliers = _supplierService.GetAllSuppliers();
+            var suppliers = await _supplierService.GetAllSuppliersAsync();
             ViewBag.Suppliers = new SelectList(suppliers, "Id", "Name");
             return View(suppliers);
 

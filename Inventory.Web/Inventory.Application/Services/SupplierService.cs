@@ -1,4 +1,4 @@
-﻿using Inventory.Application.Interfaces.IRepository;
+using Inventory.Application.Interfaces.IRepository;
 using Inventory.Application.Interfaces.IServices;
 using Inventory.Domain.Entities;
 using System;
@@ -17,32 +17,32 @@ namespace Inventory.Application.Services
             _supplierRepository = supplierRepository;
         }
 
-        public void AddSupplier(Supplier supplier)
+        public async Task AddSupplierAsync(Supplier supplier)
         {
             _supplierRepository.Add(supplier);
-            _supplierRepository.Save();
+            await _supplierRepository.SaveAsync();
         }
 
-        public IEnumerable<Supplier> GetAllSuppliers()
+        public async Task<IEnumerable<Supplier>> GetAllSuppliersAsync()
         {
-            return _supplierRepository.GetAll();
+            return await _supplierRepository.GetAllAsync();
         }
 
-        public Supplier GetSupplierById(int id)
+        public Task<Supplier?> GetSupplierByIdAsync(int id)
         {
-            return _supplierRepository.GetByIdIncluding(id);
+            return _supplierRepository.GetByIdIncludingAsync(id);
         }
 
-        public void RemoveSupplier(Supplier supplier)
+        public async Task RemoveSupplierAsync(Supplier supplier)
         {
             _supplierRepository.Delete(supplier);
-            _supplierRepository.Save();
+            await _supplierRepository.SaveAsync();
         }
 
-        public void UpdateSupplier(Supplier supplier)
+        public async Task UpdateSupplierAsync(Supplier supplier)
         {
             _supplierRepository.Update(supplier);
-            _supplierRepository.Save();
+            await _supplierRepository.SaveAsync();
         }
     }
 }

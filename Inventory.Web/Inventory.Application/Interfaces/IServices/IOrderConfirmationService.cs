@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,8 +9,8 @@ namespace Inventory.Application.Interfaces.IServices
 {
     public interface IOrderConfirmationService
     {
-        IEnumerable<SalesOrder> GetAllSalesOrder();
-        SalesOrder GetSalesOrderById(int id);
-        void UpdateSalesOrder(int id);
+        Task<IEnumerable<SalesOrder>> GetAllSalesOrderAsync();
+        Task<SalesOrder?> GetSalesOrderByIdAsync(int id);
+        Task UpdateSalesOrderAsync(int id);
     }
 }

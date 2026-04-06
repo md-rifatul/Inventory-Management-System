@@ -1,4 +1,4 @@
-﻿using Inventory.Application.ViewModels;
+using Inventory.Application.ViewModels;
 using Inventory.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -10,14 +10,14 @@ namespace Inventory.Application.Interfaces.IServices
 {
     public interface IProductService
     {
-        IEnumerable<Product> GetAllProducts();
-        Product GetProductById(int id);
-        void AddProduct(Product productName);
-        void RemoveProduct(int id);
-        void UpdateProduct(Product product);
-        IEnumerable<Product> GetMinimumStockLevels();
-        IEnumerable<Product> SearchProducts(string search);
-        void AddStock(int productId, int quantity);
-        void RemoveStock(int productId, int quantity);
+        Task<IEnumerable<Product>> GetAllProductsAsync();
+        Task<Product?> GetProductByIdAsync(int id);
+        Task AddProductAsync(Product productName);
+        Task RemoveProductAsync(int id);
+        Task UpdateProductAsync(Product product);
+        Task<IEnumerable<Product>> GetMinimumStockLevelsAsync();
+        Task<IEnumerable<Product>> SearchProductsAsync(string search);
+        Task AddStockAsync(int productId, int quantity);
+        Task RemoveStockAsync(int productId, int quantity);
     }
 }

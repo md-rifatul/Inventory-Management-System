@@ -1,6 +1,7 @@
-﻿using Inventory.Application.Interfaces.IServices;
+using Inventory.Application.Interfaces.IServices;
 using Inventory.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Inventory.Web.Controllers
 {
@@ -13,48 +14,51 @@ namespace Inventory.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var categories = _categoryService.GetAllCategories();
+            var categories = await _categoryService.GetAllCategoriesAsync();
             return View(categories);
         }
-        public IActionResult Add()
+        public Task<IActionResult> Add()
         {
-            return View();
+            return Task.FromResult<IActionResult>(View());
         }
         [HttpPost]
-        public IActionResult Add(Category categoryName)
+        public async Task<IActionResult> Add(Category categoryName)
         {
-            _categoryService.AddCategory(categoryName);
+            await _categoryService.AddCategoryAsync(categoryName);
             return RedirectToAction("Index");
         }
         [HttpGet]
-        public IActionResult Remove(int id)
+        public async Task<IActionResult> Remove(int id)
         {
-            var category = _categoryService.GetCategoryById(id);
+            var category = await _categoryService.GetCategoryByIdAsync(id);
 
             return View(category);
         }
         [HttpPost]
-        public IActionResult RemoveConfirmed(int id)
+        public async Task<IActionResult> RemoveConfirmed(int id)
         {
-            var category = _categoryService.GetCategoryById(id);
-            _categoryService.RemoveCategory(category);
+            var category = await _categoryService.GetCategoryByIdAsync(id);
+            if (category != null)
+                await _categoryService.RemoveCategoryAsync(category);
             return RedirectToAction("Index");
         }
         [HttpGet]
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var category = _categoryService.GetCategoryById(id);
+            var category = await _categoryService.GetCategoryByIdAsync(id);
             return View(category);
         }
         [HttpPost]
-        public IActionResult EditConfirm(Category newCategory)
+        public async Task<IActionResult> EditConfirm(Category newCategory)
         {
-            var existingCategory = _categoryService.GetCategoryById(newCategory.Id);
+            var existingCategory = await _categoryService.GetCategoryByIdAsync(newCategory.Id);
+            if (existingCategory == null)
+                return NotFound();
             existingCategory.Name = newCategory.Name;
             existingCategory.Description = newCategory.Description;
-            _categoryService.UpdateCategory(existingCategory);
+            await _categoryService.UpdateCategoryAsync(existingCategory);
             return RedirectToAction("Index");
         }
     }

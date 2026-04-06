@@ -1,4 +1,4 @@
-﻿using Inventory.Application.Interfaces.IRepository;
+using Inventory.Application.Interfaces.IRepository;
 using Inventory.Application.Interfaces.IServices;
 using Inventory.Domain.Entities;
 using System;
@@ -17,32 +17,33 @@ namespace Inventory.Application.Services
             _categoryRepository = categoryRepository;
         }
 
-        public void AddCategory(Category categoryName)
+        public async Task AddCategoryAsync(Category categoryName)
         {
             _categoryRepository.Add(categoryName);
-            _categoryRepository.Save();
+            await _categoryRepository.SaveAsync();
         }
 
-        public IEnumerable<Category> GetAllCategories()
+        public async Task<IEnumerable<Category>> GetAllCategoriesAsync()
         {
-            return _categoryRepository.GetAllIncluding(p=>p.Products).OrderBy(p=>p.Name);
+            var categories = await _categoryRepository.GetAllIncludingAsync(p => p.Products);
+            return categories.OrderBy(p => p.Name);
         }
 
-        public Category GetCategoryById(int id)
+        public Task<Category?> GetCategoryByIdAsync(int id)
         {
-            return _categoryRepository.GetByIdIncluding(id);
+            return _categoryRepository.GetByIdIncludingAsync(id);
         }
 
-        public void RemoveCategory(Category categoryName)
+        public async Task RemoveCategoryAsync(Category categoryName)
         {
             _categoryRepository.Delete(categoryName);
-            _categoryRepository.Save();
+            await _categoryRepository.SaveAsync();
         }
 
-        public void UpdateCategory(Category categoryName)
+        public async Task UpdateCategoryAsync(Category categoryName)
         {
             _categoryRepository.Update(categoryName);
-            _categoryRepository.Save();
+            await _categoryRepository.SaveAsync();
         }
     }
 }

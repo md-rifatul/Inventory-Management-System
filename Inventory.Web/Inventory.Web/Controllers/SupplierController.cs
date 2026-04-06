@@ -1,6 +1,7 @@
-﻿using Inventory.Application.Interfaces.IServices;
+using Inventory.Application.Interfaces.IServices;
 using Inventory.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Inventory.Web.Controllers
 {
@@ -13,52 +14,52 @@ namespace Inventory.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var suppliers = _supplierService.GetAllSuppliers();
+            var suppliers = await _supplierService.GetAllSuppliersAsync();
             return View(suppliers);
         }
-        public IActionResult Create()
+        public Task<IActionResult> Create()
         {
-            return View();
+            return Task.FromResult<IActionResult>(View());
         }
         [HttpPost]
-        public IActionResult Create(Supplier supplier)
+        public async Task<IActionResult> Create(Supplier supplier)
         {
             if (ModelState.IsValid)
             {
-                _supplierService.AddSupplier(supplier);
+                await _supplierService.AddSupplierAsync(supplier);
                 return RedirectToAction("Index");
             }
             return NotFound();
         }
         [HttpGet]
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var supplier = _supplierService.GetSupplierById(id);
+            var supplier = await _supplierService.GetSupplierByIdAsync(id);
             return View(supplier);
         }
         [HttpPost]
-        public IActionResult Edit(Supplier supplier)
+        public async Task<IActionResult> Edit(Supplier supplier)
         {
             if (ModelState.IsValid)
             {
-                _supplierService.UpdateSupplier(supplier);
+                await _supplierService.UpdateSupplierAsync(supplier);
                 return RedirectToAction("Index");
             }
             return NotFound();
         }
         [HttpGet]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var supplier = _supplierService.GetSupplierById(id);
+            var supplier = await _supplierService.GetSupplierByIdAsync(id);
             return View(supplier);
         }
 
         [HttpPost]
-        public IActionResult Delete(Supplier supplier)
+        public async Task<IActionResult> Delete(Supplier supplier)
         {
-            _supplierService.RemoveSupplier(supplier);
+            await _supplierService.RemoveSupplierAsync(supplier);
             return RedirectToAction("Index");
         }
 

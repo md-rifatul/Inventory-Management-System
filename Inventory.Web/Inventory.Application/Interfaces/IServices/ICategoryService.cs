@@ -1,4 +1,4 @@
-﻿using Inventory.Domain.Entities;
+using Inventory.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,10 +10,10 @@ namespace Inventory.Application.Interfaces.IServices
     public interface ICategoryService
     {
 
-        IEnumerable<Category> GetAllCategories();
-        Category GetCategoryById(int id);
-        void AddCategory(Category categoryName);
-        void RemoveCategory(Category categoryName);
-        void UpdateCategory(Category categoryName);
+        Task<IEnumerable<Category>> GetAllCategoriesAsync();
+        Task<Category?> GetCategoryByIdAsync(int id);
+        Task AddCategoryAsync(Category categoryName);
+        Task RemoveCategoryAsync(Category categoryName);
+        Task UpdateCategoryAsync(Category categoryName);
     }
 }

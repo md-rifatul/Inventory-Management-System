@@ -1,4 +1,4 @@
-﻿using Inventory.Domain.Entities;
+using Inventory.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +9,10 @@ namespace Inventory.Application.Interfaces.IServices
 {
     public interface ISupplierService
     {
-        IEnumerable<Supplier> GetAllSuppliers();
-        Supplier GetSupplierById(int id);
-        void AddSupplier(Supplier supplier);
-        void RemoveSupplier(Supplier supplier);
-        void UpdateSupplier(Supplier supplier);
+        Task<IEnumerable<Supplier>> GetAllSuppliersAsync();
+        Task<Supplier?> GetSupplierByIdAsync(int id);
+        Task AddSupplierAsync(Supplier supplier);
+        Task RemoveSupplierAsync(Supplier supplier);
+        Task UpdateSupplierAsync(Supplier supplier);
     }
 }

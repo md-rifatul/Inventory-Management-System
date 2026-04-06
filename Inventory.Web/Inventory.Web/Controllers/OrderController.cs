@@ -1,7 +1,9 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Inventory.Application.Interfaces.IServices;
 using Inventory.Application.ViewModels.SalesOrder;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Inventory.Web.Controllers
 {
@@ -18,28 +20,30 @@ namespace Inventory.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var orders = _orderConfirmationService.GetAllSalesOrder();
+            var orders = await _orderConfirmationService.GetAllSalesOrderAsync();
             var vm = _mapper.Map<IEnumerable<SalesOrderSummaryViewModel>>(orders);
             return View(vm);
         }
         [HttpPost]
-        public IActionResult ConfirmOrder(int Id)
+        public async Task<IActionResult> ConfirmOrder(int Id)
         {
-            _orderConfirmationService.UpdateSalesOrder(Id);
-            var order = _orderConfirmationService.GetSalesOrderById(Id);
+            await _orderConfirmationService.UpdateSalesOrderAsync(Id);
+            var order = await _orderConfirmationService.GetSalesOrderByIdAsync(Id);
+            if (order == null)
+                return NotFound();
 
             foreach (var item in order.SealsOrderItems)
             {
-                _productService.RemoveStock(item.ProductId, item.Quantity);
+                await _productService.RemoveStockAsync(item.ProductId, item.Quantity);
             }
             return RedirectToAction("Index");
         }
         [HttpGet]
-        public IActionResult Details(int Id)
+        public async Task<IActionResult> Details(int Id)
         {
-            var order = _orderConfirmationService.GetSalesOrderById(Id);
+            var order = await _orderConfirmationService.GetSalesOrderByIdAsync(Id);
             var vm = _mapper.Map<SalesOrderConfirmViewModel>(order);
             return View(vm);
         }

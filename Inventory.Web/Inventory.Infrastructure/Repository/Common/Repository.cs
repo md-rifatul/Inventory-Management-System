@@ -1,4 +1,4 @@
-﻿using Inventory.Application.Interfaces.IRepository.Common;
+using Inventory.Application.Interfaces.IRepository.Common;
 using Inventory.Domain.Entities;
 using Inventory.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -22,8 +22,9 @@ namespace Inventory.Infrastructure.Repository.Common
             _dbSet = _dbcontext.Set<T>();
         }
 
-        public IEnumerable<T> GetAll() => _dbSet.ToList();
-        public T? GetByIdIncluding(int id, params Expression<Func<T, object>>[] includes)
+        public Task<List<T>> GetAllAsync() => _dbSet.ToListAsync();
+
+        public async Task<T?> GetByIdIncludingAsync(int id, params Expression<Func<T, object>>[] includes)
         {
             IQueryable<T> query = _dbSet;
 
@@ -32,24 +33,24 @@ namespace Inventory.Infrastructure.Repository.Common
                 query = query.Include(include);
             }
 
-            return query.FirstOrDefault(e => EF.Property<int>(e, "Id") == id);
+            return await query.FirstOrDefaultAsync(e => EF.Property<int>(e, "Id") == id);
         }
         public void Add(T entity) => _dbSet.Add(entity);
         public void Update(T entity) => _dbSet.Update(entity);
         public void Delete(T entity) => _dbSet.Remove(entity);
-        public void Save() => _dbcontext.SaveChanges();
+        public Task SaveAsync() => _dbcontext.SaveChangesAsync();
 
-        public IEnumerable<T> GetAllIncluding(params Expression<Func<T, object>>[] includes)
+        public async Task<List<T>> GetAllIncludingAsync(params Expression<Func<T, object>>[] includes)
         {
             IQueryable<T> query = _dbSet;
 
             foreach (var include in includes)
                 query = query.Include(include);
 
-            return query.ToList();
+            return await query.ToListAsync();
         }
 
-        public IEnumerable<T> Search(Expression<Func<T, bool>> predicate,
+        public async Task<List<T>> SearchAsync(Expression<Func<T, bool>> predicate,
                                      params Expression<Func<T, object>>[] includes)
         {
             IQueryable<T> query = _dbcontext.Set<T>();
@@ -59,7 +60,7 @@ namespace Inventory.Infrastructure.Repository.Common
                 query = query.Include(include);
             }
 
-            return query.Where(predicate).ToList();
+            return await query.Where(predicate).ToListAsync();
         }
         public IQueryable<T> GetQueryable()
         {

@@ -1,4 +1,4 @@
-﻿using Inventory.Application.Interfaces.IRepository;
+using Inventory.Application.Interfaces.IRepository;
 using Inventory.Application.Interfaces.IServices;
 using Inventory.Domain.Entities;
 using System;
@@ -16,32 +16,32 @@ namespace Inventory.Application.Services
         {
             _purchaseOrderRepository = purchaseOrderRepository;
         }
-        public void AddPurchaseOrder(PurchaseOrder purchaseOrder)
+        public async Task AddPurchaseOrderAsync(PurchaseOrder purchaseOrder)
         {
             _purchaseOrderRepository.Add(purchaseOrder);
-            _purchaseOrderRepository.Save();
+            await _purchaseOrderRepository.SaveAsync();
         }
 
-        public PurchaseOrder GetPurchaseOrder(int id)
+        public Task<PurchaseOrder?> GetPurchaseOrderAsync(int id)
         {
-            return _purchaseOrderRepository.GetByIdIncluding(id, s=>s.Supplier);
+            return _purchaseOrderRepository.GetByIdIncludingAsync(id, s => s.Supplier);
         }
 
-        public IEnumerable<PurchaseOrder> GetAllPurchaseOrders()
+        public async Task<IEnumerable<PurchaseOrder>> GetAllPurchaseOrdersAsync()
         {
-            return _purchaseOrderRepository.GetAllIncluding(s => s.Supplier);
+            return await _purchaseOrderRepository.GetAllIncludingAsync(s => s.Supplier);
         }
 
-        public void RemovePurchaseOrder(PurchaseOrder purchaseOrder)
+        public async Task RemovePurchaseOrderAsync(PurchaseOrder purchaseOrder)
         {
             _purchaseOrderRepository.Delete(purchaseOrder);
-            _purchaseOrderRepository.Save();
+            await _purchaseOrderRepository.SaveAsync();
         }
 
-        public void UpdatePurchaseOrder(PurchaseOrder purchaseOrder)
+        public async Task UpdatePurchaseOrderAsync(PurchaseOrder purchaseOrder)
         {
             _purchaseOrderRepository.Update(purchaseOrder);
-            _purchaseOrderRepository.Save();
+            await _purchaseOrderRepository.SaveAsync();
         }
     }
 }

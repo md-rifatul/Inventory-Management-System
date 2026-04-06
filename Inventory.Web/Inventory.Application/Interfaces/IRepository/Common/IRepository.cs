@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -10,15 +10,15 @@ namespace Inventory.Application.Interfaces.IRepository.Common
     public interface IRepository<T> where T : class
     {
         public IQueryable<T> GetQueryable();
-        IEnumerable<T> GetAll();
-        IEnumerable<T> GetAllIncluding(params Expression<Func<T, object>>[] includes);
-        T? GetByIdIncluding(int id, params Expression<Func<T, object>>[] includes);
-        public IEnumerable<T> Search(Expression<Func<T, bool>> predicate,
+        Task<List<T>> GetAllAsync();
+        Task<List<T>> GetAllIncludingAsync(params Expression<Func<T, object>>[] includes);
+        Task<T?> GetByIdIncludingAsync(int id, params Expression<Func<T, object>>[] includes);
+        Task<List<T>> SearchAsync(Expression<Func<T, bool>> predicate,
                              params Expression<Func<T, object>>[] includes);
 
         void Add(T entity);
         void Update(T entity);
         void Delete(T entity);
-        void Save();
+        Task SaveAsync();
     }
 }

@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Inventory.Application.Interfaces.IRepository;
 using Inventory.Application.Interfaces.IServices;
 using Inventory.Application.Mappings;
@@ -23,17 +23,17 @@ namespace Inventory.Application.Services
             _stockTransactionService = stockTransactionService;
         }
 
-        public void AddProduct(Product productName)
+        public async Task AddProductAsync(Product productName)
         {
             _productRepository.Add(productName);
-            _productRepository.Save();
+            await _productRepository.SaveAsync();
         }
 
-        public void AddStock(int productId, int quantity)
+        public async Task AddStockAsync(int productId, int quantity)
         {
             if (quantity > 0)
             {
-                var product = GetProductById(productId);
+                var product = await GetProductByIdAsync(productId);
                 if (product == null)
                     return;
                 product.QuantityOfStock += quantity;
@@ -44,17 +44,17 @@ namespace Inventory.Application.Services
                     BlanceAfter = product.QuantityOfStock,
                     TransactionType = TransactionType.Purchase,
                 };
-                _stockTransactionService.Add(transaction);
-                _productRepository.Save();
+                await _stockTransactionService.AddAsync(transaction);
+                await _productRepository.SaveAsync();
             }
             return;
         }
 
-        public void RemoveStock(int productId, int quantity)
+        public async Task RemoveStockAsync(int productId, int quantity)
         {
             if (quantity > 0)
             {
-                var product = GetProductById(productId);
+                var product = await GetProductByIdAsync(productId);
                 if (product == null)
                     return;
                 product.QuantityOfStock -= quantity;
@@ -65,42 +65,43 @@ namespace Inventory.Application.Services
                     BlanceAfter = product.QuantityOfStock,
                     TransactionType = TransactionType.Sale,
                 };
-                _stockTransactionService.Add(transaction);
-                _productRepository.Save();
+                await _stockTransactionService.AddAsync(transaction);
+                await _productRepository.SaveAsync();
             }
             return;
         }
 
-        public IEnumerable<Product> GetAllProducts()
+        public async Task<IEnumerable<Product>> GetAllProductsAsync()
         {
-            var products = _productRepository.GetAllIncluding(p => p.Category, s => s.Supplier);
+            var products = await _productRepository.GetAllIncludingAsync(p => p.Category, s => s.Supplier);
             return products;
         }
 
-        public IEnumerable<Product> GetMinimumStockLevels()
+        public async Task<IEnumerable<Product>> GetMinimumStockLevelsAsync()
         {
-            var products = _productRepository.GetAllIncluding(x=>x.Category,x=>x.Supplier)
-                .Where(x => x.QuantityOfStock <= x.MinimumStockLevel);
-            return products;
+            var products = await _productRepository.GetAllIncludingAsync(x => x.Category, x => x.Supplier);
+            return products.Where(x => x.QuantityOfStock <= x.MinimumStockLevel);
         }
 
-        public Product GetProductById(int id)
+        public async Task<Product?> GetProductByIdAsync(int id)
         {
 
-            var product = _productRepository.GetByIdIncluding(id,c=>c.Category,p=>p.Supplier);
+            var product = await _productRepository.GetByIdIncludingAsync(id, c => c.Category, p => p.Supplier);
             return product;
         }
 
-        public void RemoveProduct(int id)
+        public async Task RemoveProductAsync(int id)
         {
-            var product = _productRepository.GetByIdIncluding(id);
+            var product = await _productRepository.GetByIdIncludingAsync(id);
+            if (product == null)
+                return;
             _productRepository.Delete(product);
-            _productRepository.Save();
+            await _productRepository.SaveAsync();
         }
 
-        public IEnumerable<Product> SearchProducts(string search)
+        public async Task<IEnumerable<Product>> SearchProductsAsync(string search)
         {
-            var products = _productRepository.Search(
+            var products = await _productRepository.SearchAsync(
                 p => p.Name.Contains(search) || p.Sku.Contains(search), // predicate
                 p => p.Category,                                        // include
                 p => p.Supplier                                         // include
@@ -108,10 +109,10 @@ namespace Inventory.Application.Services
             return products;
         }
 
-        public void UpdateProduct(Product product)
+        public async Task UpdateProductAsync(Product product)
         {
             _productRepository.Update(product);
-            _productRepository.Save();
+            await _productRepository.SaveAsync();
         }
     }
 }

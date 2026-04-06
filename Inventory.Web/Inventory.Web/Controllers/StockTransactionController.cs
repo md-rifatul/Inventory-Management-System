@@ -1,5 +1,6 @@
-﻿using Inventory.Application.Interfaces.IServices;
+using Inventory.Application.Interfaces.IServices;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Inventory.Web.Controllers
 {
@@ -14,10 +15,10 @@ namespace Inventory.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var stockTransations = _stockTransactionService.GetStockTransactions();
-            var products = _productService.GetAllProducts();
+            var stockTransations = await _stockTransactionService.GetStockTransactionsAsync();
+            var products = await _productService.GetAllProductsAsync();
             return View(stockTransations);
         }
     }

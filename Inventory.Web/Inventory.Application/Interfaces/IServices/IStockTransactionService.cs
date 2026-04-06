@@ -1,4 +1,4 @@
-﻿using Inventory.Domain.Entities;
+using Inventory.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ namespace Inventory.Application.Interfaces.IServices
 {
     public interface IStockTransactionService
     {
-        IEnumerable<StockTransaction> GetStockTransactions();
-        void Add(StockTransaction transaction);
+        Task<IEnumerable<StockTransaction>> GetStockTransactionsAsync();
+        Task AddAsync(StockTransaction transaction);
     }
 }
