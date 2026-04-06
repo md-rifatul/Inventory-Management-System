@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Inventory.Application.Interfaces.IRepository;
 using Inventory.Application.Interfaces.IServices;
 using Inventory.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using Inventory.Domain.Entities.Enums;
 
 namespace Inventory.Application.Services
@@ -25,7 +26,10 @@ namespace Inventory.Application.Services
 
         public SalesOrder GetSalesOrderById(int id)
         {
-            return _salesOrderRepository.GetByIdIncluding(id, s=>s.SealsOrderItems);
+            return _salesOrderRepository.GetQueryable()
+            .Include(s => s.SealsOrderItems)      // Level 1: Get the list of items
+            .ThenInclude(i => i.Product)      // Level 2: Get the Product for EACH item
+        .FirstOrDefault(s => s.Id == id);
         }
 
         public void UpdateSalesOrder(int id)

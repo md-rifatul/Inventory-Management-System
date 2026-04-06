@@ -9,6 +9,7 @@ namespace Inventory.Application.Interfaces.IRepository.Common
 {
     public interface IRepository<T> where T : class
     {
+        public IQueryable<T> GetQueryable();
         IEnumerable<T> GetAll();
         IEnumerable<T> GetAllIncluding(params Expression<Func<T, object>>[] includes);
         T? GetByIdIncluding(int id, params Expression<Func<T, object>>[] includes);
