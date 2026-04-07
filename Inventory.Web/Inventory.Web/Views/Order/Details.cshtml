@@ -67,13 +67,16 @@
             </a>
 
             @* Form to submit the Confirmation *@
-            <form asp-action="ConfirmOrder" asp-route-id="@Model.Id" method="post">
-                @Html.AntiForgeryToken()
-                <button type="submit" class="btn btn-success px-4"
-                        onclick="return confirm('Are you sure you want to confirm this order? This will update inventory.')">
-                    <i class="bi bi-check-circle"></i> Confirm Order
-                </button>
-            </form>
+            @if (Model.Status != "Completed")
+            {
+                <form asp-action="ConfirmOrder" asp-route-id="@Model.Id" method="post">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-success px-4"
+                            onclick="return confirm('Are you sure you want to confirm this order? This will update inventory.')">
+                        <i class="bi bi-check-circle"></i> Confirm Order
+                    </button>
+                </form>
+            }
         </div>
     </div>
 </div>

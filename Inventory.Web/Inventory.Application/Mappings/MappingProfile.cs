@@ -52,7 +52,8 @@ namespace Inventory.Application.Mappings
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.SalesOrderStatus.ToString()));
 
             CreateMap<SalesOrder, SalesOrderConfirmViewModel>()
-                .ForMember(dest=>dest.Items,opt=>opt.MapFrom(src=>src.SealsOrderItems));
+                .ForMember(dest=>dest.Items,opt=>opt.MapFrom(src=>src.SealsOrderItems))
+                .ForMember(dest=>dest.Status,opt=>opt.MapFrom(src=>src.SalesOrderStatus));
 
             CreateMap<SalesOrderItem, OrderItemDetailViewModel>()
                 .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product.Name));

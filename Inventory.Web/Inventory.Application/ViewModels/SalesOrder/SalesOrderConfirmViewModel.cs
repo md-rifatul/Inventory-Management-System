@@ -13,6 +13,7 @@ namespace Inventory.Application.ViewModels.SalesOrder
         public string CustomerName { get; set; }
         public string Address { get; set; }
         public decimal TotalAmount { get; set; }
+        public string Status { get; set; }
 
         // Items list for the admin to verify stock/contents
         public List<OrderItemDetailViewModel> Items { get; set; } = new();
