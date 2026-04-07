@@ -12,6 +12,7 @@ namespace Inventory.Domain.Entities
         public int Id { get; set; }
         public string OrderNumber { get; set; }
         public string CustomerName { get; set; }
+        public string Address { get; set; }
         public decimal TotalAmount { get; set; }
         public SalesOrderStatus SalesOrderStatus { get; set; }
 

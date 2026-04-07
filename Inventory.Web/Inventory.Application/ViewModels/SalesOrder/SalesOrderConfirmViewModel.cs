@@ -11,6 +11,7 @@ namespace Inventory.Application.ViewModels.SalesOrder
         public int Id { get; set; }
         public string OrderNumber { get; set; }
         public string CustomerName { get; set; }
+        public string Address { get; set; }
         public decimal TotalAmount { get; set; }
 
         // Items list for the admin to verify stock/contents
