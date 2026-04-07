@@ -5,6 +5,7 @@ using Inventory.Application.Services;
 using Inventory.Infrastructure.Data;
 using Inventory.Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
+using Inventory.Application.Services.Payment;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,6 +36,14 @@ builder.Services.AddScoped<IStockTransactionService, StockTransactionService>();
 builder.Services.AddScoped<IPurchaseOrderService,PurchaseOrderService>();
 builder.Services.AddScoped<ISalesOrderService,SalesOrderService>();
 builder.Services.AddScoped<IOrderConfirmationService, OrderConfirmationService>();
+
+
+// Add services to the container.
+builder.Services.AddControllersWithViews();
+
+// Register your PaymentService
+builder.Services.AddScoped<PaymentService>();
+
 
 var app = builder.Build();
 

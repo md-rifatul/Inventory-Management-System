@@ -5,6 +5,7 @@ using Inventory.Domain.Entities.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Stripe.V2;
 using System.Threading.Tasks;
 
 namespace Inventory.Web.Controllers
@@ -52,7 +53,7 @@ namespace Inventory.Web.Controllers
                     return View(createSalesOrderViewModel);
                 }
                 await _salesOrderService.AddSaleOrderAsync(createSalesOrderViewModel);
-                return RedirectToAction("Index", "Product");
+                return RedirectToAction("Pay", "Payment", new { amount = createSalesOrderViewModel.Quantity*createSalesOrderViewModel.UnitPrice });
             }
             catch (System.Exception)
             {
