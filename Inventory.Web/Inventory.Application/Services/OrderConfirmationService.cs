@@ -53,7 +53,7 @@ namespace Inventory.Application.Services
                 var order = await GetSalesOrderByIdAsync(id);
                 if (order == null)
                     return;
-                order.SalesOrderStatus = SalesOrderStatus.Coompleted;
+                order.SalesOrderStatus = SalesOrderStatus.Completed;
                 _salesOrderRepository.Update(order);
                 await _salesOrderRepository.SaveAsync();
             }

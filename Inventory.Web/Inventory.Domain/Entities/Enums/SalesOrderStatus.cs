@@ -9,7 +9,7 @@ namespace Inventory.Domain.Entities.Enums
     public enum SalesOrderStatus
     {
         Pending = 1,
-        Coompleted = 2,
+        Completed = 2,
         Cancelled = 3,
     }
 }

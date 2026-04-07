@@ -42,7 +42,7 @@
                                         View
                                     </a>
 
-                                    @if (order.Status != "Confirmed")
+                                    @if (order.Status != "Completed")
                                     {
                                         <form asp-action="ConfirmOrder" asp-route-id="@order.Id" method="post" class="d-inline">
                                             @Html.AntiForgeryToken()
