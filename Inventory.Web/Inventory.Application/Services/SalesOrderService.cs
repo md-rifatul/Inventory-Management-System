@@ -26,17 +26,24 @@ namespace Inventory.Application.Services
 
         public async Task AddSaleOrderAsync(CreateSalesOrderViewModel createSalesOrderViewModel)
         {
-            //create sales order
-            var salesOrder = _mapper.Map<SalesOrder>(createSalesOrderViewModel);
+            try
+            {
+                //create sales order
+                var salesOrder = _mapper.Map<SalesOrder>(createSalesOrderViewModel);
 
-            //create salesOrderItems
-            var salesOrderItem = _mapper.Map<SalesOrderItem>(createSalesOrderViewModel);
+                //create salesOrderItems
+                var salesOrderItem = _mapper.Map<SalesOrderItem>(createSalesOrderViewModel);
 
 
-            salesOrder.SealsOrderItems.Add(salesOrderItem);
+                salesOrder.SealsOrderItems.Add(salesOrderItem);
 
-            _salesOrderRepository.Add(salesOrder);
-            await _salesOrderRepository.SaveAsync();
+                _salesOrderRepository.Add(salesOrder);
+                await _salesOrderRepository.SaveAsync();
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
     }
 }

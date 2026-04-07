@@ -22,30 +22,51 @@ namespace Inventory.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var orders = await _orderConfirmationService.GetAllSalesOrderAsync();
-            var vm = _mapper.Map<IEnumerable<SalesOrderSummaryViewModel>>(orders);
-            return View(vm);
+            try
+            {
+                var orders = await _orderConfirmationService.GetAllSalesOrderAsync();
+                var vm = _mapper.Map<IEnumerable<SalesOrderSummaryViewModel>>(orders);
+                return View(vm);
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
         [HttpPost]
         public async Task<IActionResult> ConfirmOrder(int Id)
         {
-            await _orderConfirmationService.UpdateSalesOrderAsync(Id);
-            var order = await _orderConfirmationService.GetSalesOrderByIdAsync(Id);
-            if (order == null)
-                return NotFound();
-
-            foreach (var item in order.SealsOrderItems)
+            try
             {
-                await _productService.RemoveStockAsync(item.ProductId, item.Quantity);
+                await _orderConfirmationService.UpdateSalesOrderAsync(Id);
+                var order = await _orderConfirmationService.GetSalesOrderByIdAsync(Id);
+                if (order == null)
+                    return NotFound();
+
+                foreach (var item in order.SealsOrderItems)
+                {
+                    await _productService.RemoveStockAsync(item.ProductId, item.Quantity);
+                }
+                return RedirectToAction("Index");
             }
-            return RedirectToAction("Index");
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
         [HttpGet]
         public async Task<IActionResult> Details(int Id)
         {
-            var order = await _orderConfirmationService.GetSalesOrderByIdAsync(Id);
-            var vm = _mapper.Map<SalesOrderConfirmViewModel>(order);
-            return View(vm);
+            try
+            {
+                var order = await _orderConfirmationService.GetSalesOrderByIdAsync(Id);
+                var vm = _mapper.Map<SalesOrderConfirmViewModel>(order);
+                return View(vm);
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
     }
 }

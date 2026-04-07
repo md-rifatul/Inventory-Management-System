@@ -16,50 +16,99 @@ namespace Inventory.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var categories = await _categoryService.GetAllCategoriesAsync();
-            return View(categories);
+            try
+            {
+                var categories = await _categoryService.GetAllCategoriesAsync();
+                return View(categories);
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
         public Task<IActionResult> Add()
         {
-            return Task.FromResult<IActionResult>(View());
+            try
+            {
+                return Task.FromResult<IActionResult>(View());
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
         [HttpPost]
         public async Task<IActionResult> Add(Category categoryName)
         {
-            await _categoryService.AddCategoryAsync(categoryName);
-            return RedirectToAction("Index");
+            try
+            {
+                await _categoryService.AddCategoryAsync(categoryName);
+                return RedirectToAction("Index");
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
         [HttpGet]
         public async Task<IActionResult> Remove(int id)
         {
-            var category = await _categoryService.GetCategoryByIdAsync(id);
+            try
+            {
+                var category = await _categoryService.GetCategoryByIdAsync(id);
 
-            return View(category);
+                return View(category);
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
         [HttpPost]
         public async Task<IActionResult> RemoveConfirmed(int id)
         {
-            var category = await _categoryService.GetCategoryByIdAsync(id);
-            if (category != null)
-                await _categoryService.RemoveCategoryAsync(category);
-            return RedirectToAction("Index");
+            try
+            {
+                var category = await _categoryService.GetCategoryByIdAsync(id);
+                if (category != null)
+                    await _categoryService.RemoveCategoryAsync(category);
+                return RedirectToAction("Index");
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var category = await _categoryService.GetCategoryByIdAsync(id);
-            return View(category);
+            try
+            {
+                var category = await _categoryService.GetCategoryByIdAsync(id);
+                return View(category);
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
         [HttpPost]
         public async Task<IActionResult> EditConfirm(Category newCategory)
         {
-            var existingCategory = await _categoryService.GetCategoryByIdAsync(newCategory.Id);
-            if (existingCategory == null)
-                return NotFound();
-            existingCategory.Name = newCategory.Name;
-            existingCategory.Description = newCategory.Description;
-            await _categoryService.UpdateCategoryAsync(existingCategory);
-            return RedirectToAction("Index");
+            try
+            {
+                var existingCategory = await _categoryService.GetCategoryByIdAsync(newCategory.Id);
+                if (existingCategory == null)
+                    return NotFound();
+                existingCategory.Name = newCategory.Name;
+                existingCategory.Description = newCategory.Description;
+                await _categoryService.UpdateCategoryAsync(existingCategory);
+                return RedirectToAction("Index");
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
     }
 }

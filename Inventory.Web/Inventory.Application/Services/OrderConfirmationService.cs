@@ -21,25 +21,46 @@ namespace Inventory.Application.Services
 
         public async Task<IEnumerable<SalesOrder>> GetAllSalesOrderAsync()
         {
-            return await _salesOrderRepository.GetAllIncludingAsync();
+            try
+            {
+                return await _salesOrderRepository.GetAllIncludingAsync();
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
 
         public Task<SalesOrder?> GetSalesOrderByIdAsync(int id)
         {
-            return _salesOrderRepository.GetQueryable()
-            .Include(s => s.SealsOrderItems)      // Level 1: Get the list of items
-            .ThenInclude(i => i.Product)      // Level 2: Get the Product for EACH item
-        .FirstOrDefaultAsync(s => s.Id == id);
+            try
+            {
+                return _salesOrderRepository.GetQueryable()
+                .Include(s => s.SealsOrderItems)      // Level 1: Get the list of items
+                .ThenInclude(i => i.Product)      // Level 2: Get the Product for EACH item
+            .FirstOrDefaultAsync(s => s.Id == id);
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
 
         public async Task UpdateSalesOrderAsync(int id)
         {
-            var order = await GetSalesOrderByIdAsync(id);
-            if (order == null)
-                return;
-            order.SalesOrderStatus = SalesOrderStatus.Coompleted;
-            _salesOrderRepository.Update(order);
-            await _salesOrderRepository.SaveAsync();
+            try
+            {
+                var order = await GetSalesOrderByIdAsync(id);
+                if (order == null)
+                    return;
+                order.SalesOrderStatus = SalesOrderStatus.Coompleted;
+                _salesOrderRepository.Update(order);
+                await _salesOrderRepository.SaveAsync();
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
     }
 }

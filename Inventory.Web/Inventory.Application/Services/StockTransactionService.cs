@@ -19,13 +19,27 @@ namespace Inventory.Application.Services
 
         public async Task AddAsync(StockTransaction transaction)
         {
-            _stockTransactionRepository.Add(transaction);
-            await _stockTransactionRepository.SaveAsync();
+            try
+            {
+                _stockTransactionRepository.Add(transaction);
+                await _stockTransactionRepository.SaveAsync();
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
 
         public async Task<IEnumerable<StockTransaction>> GetStockTransactionsAsync()
         {
-            return await _stockTransactionRepository.GetAllIncludingAsync(x => x.Product);
+            try
+            {
+                return await _stockTransactionRepository.GetAllIncludingAsync(x => x.Product);
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
     }
 }

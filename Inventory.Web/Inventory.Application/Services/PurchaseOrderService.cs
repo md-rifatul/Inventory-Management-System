@@ -18,30 +18,65 @@ namespace Inventory.Application.Services
         }
         public async Task AddPurchaseOrderAsync(PurchaseOrder purchaseOrder)
         {
-            _purchaseOrderRepository.Add(purchaseOrder);
-            await _purchaseOrderRepository.SaveAsync();
+            try
+            {
+                _purchaseOrderRepository.Add(purchaseOrder);
+                await _purchaseOrderRepository.SaveAsync();
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
 
         public Task<PurchaseOrder?> GetPurchaseOrderAsync(int id)
         {
-            return _purchaseOrderRepository.GetByIdIncludingAsync(id, s => s.Supplier);
+            try
+            {
+                return _purchaseOrderRepository.GetByIdIncludingAsync(id, s => s.Supplier);
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
 
         public async Task<IEnumerable<PurchaseOrder>> GetAllPurchaseOrdersAsync()
         {
-            return await _purchaseOrderRepository.GetAllIncludingAsync(s => s.Supplier);
+            try
+            {
+                return await _purchaseOrderRepository.GetAllIncludingAsync(s => s.Supplier);
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
 
         public async Task RemovePurchaseOrderAsync(PurchaseOrder purchaseOrder)
         {
-            _purchaseOrderRepository.Delete(purchaseOrder);
-            await _purchaseOrderRepository.SaveAsync();
+            try
+            {
+                _purchaseOrderRepository.Delete(purchaseOrder);
+                await _purchaseOrderRepository.SaveAsync();
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
 
         public async Task UpdatePurchaseOrderAsync(PurchaseOrder purchaseOrder)
         {
-            _purchaseOrderRepository.Update(purchaseOrder);
-            await _purchaseOrderRepository.SaveAsync();
+            try
+            {
+                _purchaseOrderRepository.Update(purchaseOrder);
+                await _purchaseOrderRepository.SaveAsync();
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
     }
 }

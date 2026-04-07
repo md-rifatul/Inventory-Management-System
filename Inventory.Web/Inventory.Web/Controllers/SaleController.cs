@@ -23,27 +23,41 @@ namespace Inventory.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> GetProduct(int Id)
         {
-            var product = await _productService.GetProductByIdAsync(Id);
-            if (product == null)
-                return NotFound();
-            var vm = new CreateSalesOrderViewModel
+            try
             {
-                ProductId = product.Id,
-                ProductName = product.Name,
-                UnitPrice = product.UnitPrice
-            };
-            return View(vm);
+                var product = await _productService.GetProductByIdAsync(Id);
+                if (product == null)
+                    return NotFound();
+                var vm = new CreateSalesOrderViewModel
+                {
+                    ProductId = product.Id,
+                    ProductName = product.Name,
+                    UnitPrice = product.UnitPrice
+                };
+                return View(vm);
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
 
         [HttpPost]
         public async Task<IActionResult> GetProuct(CreateSalesOrderViewModel createSalesOrderViewModel)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return View(createSalesOrderViewModel);
+                if (!ModelState.IsValid)
+                {
+                    return View(createSalesOrderViewModel);
+                }
+                await _salesOrderService.AddSaleOrderAsync(createSalesOrderViewModel);
+                return RedirectToAction("Index", "Product");
             }
-            await _salesOrderService.AddSaleOrderAsync(createSalesOrderViewModel);
-            return RedirectToAction("Index", "Product");
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
     }
 }

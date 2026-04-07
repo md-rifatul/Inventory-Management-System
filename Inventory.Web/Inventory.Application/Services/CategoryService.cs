@@ -19,31 +19,66 @@ namespace Inventory.Application.Services
 
         public async Task AddCategoryAsync(Category categoryName)
         {
-            _categoryRepository.Add(categoryName);
-            await _categoryRepository.SaveAsync();
+            try
+            {
+                _categoryRepository.Add(categoryName);
+                await _categoryRepository.SaveAsync();
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
 
         public async Task<IEnumerable<Category>> GetAllCategoriesAsync()
         {
-            var categories = await _categoryRepository.GetAllIncludingAsync(p => p.Products);
-            return categories.OrderBy(p => p.Name);
+            try
+            {
+                var categories = await _categoryRepository.GetAllIncludingAsync(p => p.Products);
+                return categories.OrderBy(p => p.Name);
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
 
         public Task<Category?> GetCategoryByIdAsync(int id)
         {
-            return _categoryRepository.GetByIdIncludingAsync(id);
+            try
+            {
+                return _categoryRepository.GetByIdIncludingAsync(id);
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
 
         public async Task RemoveCategoryAsync(Category categoryName)
         {
-            _categoryRepository.Delete(categoryName);
-            await _categoryRepository.SaveAsync();
+            try
+            {
+                _categoryRepository.Delete(categoryName);
+                await _categoryRepository.SaveAsync();
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
 
         public async Task UpdateCategoryAsync(Category categoryName)
         {
-            _categoryRepository.Update(categoryName);
-            await _categoryRepository.SaveAsync();
+            try
+            {
+                _categoryRepository.Update(categoryName);
+                await _categoryRepository.SaveAsync();
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
     }
 }

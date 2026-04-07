@@ -19,30 +19,65 @@ namespace Inventory.Application.Services
 
         public async Task AddSupplierAsync(Supplier supplier)
         {
-            _supplierRepository.Add(supplier);
-            await _supplierRepository.SaveAsync();
+            try
+            {
+                _supplierRepository.Add(supplier);
+                await _supplierRepository.SaveAsync();
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
 
         public async Task<IEnumerable<Supplier>> GetAllSuppliersAsync()
         {
-            return await _supplierRepository.GetAllAsync();
+            try
+            {
+                return await _supplierRepository.GetAllAsync();
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
 
         public Task<Supplier?> GetSupplierByIdAsync(int id)
         {
-            return _supplierRepository.GetByIdIncludingAsync(id);
+            try
+            {
+                return _supplierRepository.GetByIdIncludingAsync(id);
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
 
         public async Task RemoveSupplierAsync(Supplier supplier)
         {
-            _supplierRepository.Delete(supplier);
-            await _supplierRepository.SaveAsync();
+            try
+            {
+                _supplierRepository.Delete(supplier);
+                await _supplierRepository.SaveAsync();
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
 
         public async Task UpdateSupplierAsync(Supplier supplier)
         {
-            _supplierRepository.Update(supplier);
-            await _supplierRepository.SaveAsync();
+            try
+            {
+                _supplierRepository.Update(supplier);
+                await _supplierRepository.SaveAsync();
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
     }
 }

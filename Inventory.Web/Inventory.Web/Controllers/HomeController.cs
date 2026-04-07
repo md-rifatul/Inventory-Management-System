@@ -16,18 +16,39 @@ namespace Inventory.Web.Controllers
 
         public Task<IActionResult> Index()
         {
-            return Task.FromResult<IActionResult>(View());
+            try
+            {
+                return Task.FromResult<IActionResult>(View());
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
 
         public Task<IActionResult> Privacy()
         {
-            return Task.FromResult<IActionResult>(View());
+            try
+            {
+                return Task.FromResult<IActionResult>(View());
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public Task<IActionResult> Error()
         {
-            return Task.FromResult<IActionResult>(View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier }));
+            try
+            {
+                return Task.FromResult<IActionResult>(View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier }));
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
     }
 }

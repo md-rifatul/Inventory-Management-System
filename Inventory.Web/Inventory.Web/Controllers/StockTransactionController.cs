@@ -17,9 +17,16 @@ namespace Inventory.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var stockTransations = await _stockTransactionService.GetStockTransactionsAsync();
-            var products = await _productService.GetAllProductsAsync();
-            return View(stockTransations);
+            try
+            {
+                var stockTransations = await _stockTransactionService.GetStockTransactionsAsync();
+                var products = await _productService.GetAllProductsAsync();
+                return View(stockTransations);
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
     }
 }

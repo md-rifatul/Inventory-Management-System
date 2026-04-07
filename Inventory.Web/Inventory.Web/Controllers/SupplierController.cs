@@ -16,51 +16,100 @@ namespace Inventory.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var suppliers = await _supplierService.GetAllSuppliersAsync();
-            return View(suppliers);
+            try
+            {
+                var suppliers = await _supplierService.GetAllSuppliersAsync();
+                return View(suppliers);
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
         public Task<IActionResult> Create()
         {
-            return Task.FromResult<IActionResult>(View());
+            try
+            {
+                return Task.FromResult<IActionResult>(View());
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
         [HttpPost]
         public async Task<IActionResult> Create(Supplier supplier)
         {
-            if (ModelState.IsValid)
+            try
             {
-                await _supplierService.AddSupplierAsync(supplier);
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    await _supplierService.AddSupplierAsync(supplier);
+                    return RedirectToAction("Index");
+                }
+                return NotFound();
             }
-            return NotFound();
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var supplier = await _supplierService.GetSupplierByIdAsync(id);
-            return View(supplier);
+            try
+            {
+                var supplier = await _supplierService.GetSupplierByIdAsync(id);
+                return View(supplier);
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
         [HttpPost]
         public async Task<IActionResult> Edit(Supplier supplier)
         {
-            if (ModelState.IsValid)
+            try
             {
-                await _supplierService.UpdateSupplierAsync(supplier);
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    await _supplierService.UpdateSupplierAsync(supplier);
+                    return RedirectToAction("Index");
+                }
+                return NotFound();
             }
-            return NotFound();
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            var supplier = await _supplierService.GetSupplierByIdAsync(id);
-            return View(supplier);
+            try
+            {
+                var supplier = await _supplierService.GetSupplierByIdAsync(id);
+                return View(supplier);
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
 
         [HttpPost]
         public async Task<IActionResult> Delete(Supplier supplier)
         {
-            await _supplierService.RemoveSupplierAsync(supplier);
-            return RedirectToAction("Index");
+            try
+            {
+                await _supplierService.RemoveSupplierAsync(supplier);
+                return RedirectToAction("Index");
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
 
     }
