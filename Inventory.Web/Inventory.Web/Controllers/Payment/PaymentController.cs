@@ -1,7 +1,7 @@
 ﻿using Inventory.Application.Services.Payment;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Inventory.Web.Controllers
+namespace Inventory.Web.Controllers.Payment
 {
     public class PaymentController : Controller
     {
@@ -18,8 +18,9 @@ namespace Inventory.Web.Controllers
             return Redirect(session.Url);
         }
 
-        public IActionResult Success()
+        public IActionResult Success(string session_id)
         {
+            ViewBag.SessionId = session_id;
             return View();
         }
 

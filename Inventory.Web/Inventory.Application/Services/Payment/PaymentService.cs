@@ -36,8 +36,8 @@ namespace Inventory.Application.Services.Payment
                     }
                 },
                 Mode = "payment",
-                SuccessUrl = "https://your-ngrok-url/payment/success",
-                CancelUrl = "https://your-ngrok-url/payment/cancel"
+                SuccessUrl = "https://localhost:44320/Payment/Success?session_id={CHECKOUT_SESSION_ID}",
+                CancelUrl = "https://localhost:44320/Payment/Cancel",
             };
 
             var service = new SessionService();
