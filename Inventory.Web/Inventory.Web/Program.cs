@@ -39,6 +39,13 @@ builder.Services.AddScoped<IOrderConfirmationService, OrderConfirmationService>(
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 
 
+// Add services to the container.
+builder.Services.AddControllersWithViews();
+
+// Register your PaymentService
+builder.Services.AddScoped<PaymentService>();
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -56,7 +63,6 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapControllers();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Product}/{action=Index}/{id?}");

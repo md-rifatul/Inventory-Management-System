@@ -1,3 +1,4 @@
+using AutoMapper;
 using Inventory.Application.Interfaces.IServices;
 using Inventory.Application.ViewModels.Sales;
 using Inventory.Domain.Entities;
@@ -15,11 +16,13 @@ namespace Inventory.Web.Controllers
         private readonly IProductService _productService;
         private readonly ISupplierService _supplierService;
         private readonly ISalesOrderService _salesOrderService;
-        public SaleController(IProductService productService, ISupplierService supplierService, ISalesOrderService salesOrderService)
+        private readonly IMapper _mapper;
+        public SaleController(IProductService productService, ISupplierService supplierService, ISalesOrderService salesOrderService, IMapper mapper)
         {
             _productService = productService;
             _supplierService = supplierService;
             _salesOrderService = salesOrderService;
+            _mapper = mapper;
         }
         [HttpGet]
         public async Task<IActionResult> GetProduct(int Id)
@@ -29,12 +32,8 @@ namespace Inventory.Web.Controllers
                 var product = await _productService.GetProductByIdAsync(Id);
                 if (product == null)
                     return NotFound();
-                var vm = new CreateSalesOrderViewModel
-                {
-                    ProductId = product.Id,
-                    ProductName = product.Name,
-                    UnitPrice = product.UnitPrice
-                };
+
+                var vm = _mapper.Map<CreateSalesOrderViewModel>(product);
                 return View(vm);
             }
             catch (System.Exception)

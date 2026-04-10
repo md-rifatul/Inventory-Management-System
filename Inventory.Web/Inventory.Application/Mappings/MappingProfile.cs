@@ -57,6 +57,11 @@ namespace Inventory.Application.Mappings
 
             CreateMap<SalesOrderItem, OrderItemDetailViewModel>()
                 .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product.Name));
+
+            CreateMap<Product, CreateSalesOrderViewModel>()
+                .ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Name))
+                .ForMember(dest => dest.UnitPrice, opt => opt.MapFrom(src => src.UnitPrice));
         }
     }
 }

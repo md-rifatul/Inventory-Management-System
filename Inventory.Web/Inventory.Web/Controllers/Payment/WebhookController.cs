@@ -2,11 +2,9 @@
 using Inventory.Domain.Entities.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Stripe;
-using Stripe.Checkout;
-using System.IO;
 
 [ApiController]
-public class WebhookController : Controller
+public class WebhookController : ControllerBase
 {
     private readonly ISalesOrderService _salesOrderService;
     private readonly IConfiguration _configuration;
@@ -17,11 +15,10 @@ public class WebhookController : Controller
         _configuration = configuration;
     }
 
-    [HttpPost]
-    [Route("webhook")]
-    public async Task<IActionResult> Index()
+    [HttpPost("webhook")]
+    public async Task<IActionResult> StripeWebhook()
     {
-        var json = await new StreamReader(Request.Body).ReadToEndAsync();
+        var json = await new StreamReader(HttpContext.Request.Body).ReadToEndAsync();
 
         try
         {
@@ -31,21 +28,15 @@ public class WebhookController : Controller
                 _configuration["Stripe:WebhookSecret"]
             );
 
-            // ✅ Payment Success
             if (stripeEvent.Type == "checkout.session.completed")
             {
-                var session = stripeEvent.Data.Object as Session;
-                if (
-                    session != null
-                    && session.Metadata.TryGetValue("orderId", out var orderId)
-                    && !string.IsNullOrWhiteSpace(orderId)
-                    && int.TryParse(orderId, out var parsedOrderId)
-                )
+                var session = stripeEvent.Data.Object as Stripe.Checkout.Session;
+
+                var orderId = session?.Metadata["orderId"];
+
+                if (int.TryParse(orderId, out int id))
                 {
-                    await _salesOrderService.UpdateOrderStatusAsync(
-                        parsedOrderId,
-                        SalesOrderStatus.Paid
-                    );
+                    await _salesOrderService.UpdateOrderStatusAsync(id, SalesOrderStatus.Paid);
                 }
             }
 
