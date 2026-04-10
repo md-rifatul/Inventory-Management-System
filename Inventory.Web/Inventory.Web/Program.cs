@@ -36,13 +36,7 @@ builder.Services.AddScoped<IStockTransactionService, StockTransactionService>();
 builder.Services.AddScoped<IPurchaseOrderService,PurchaseOrderService>();
 builder.Services.AddScoped<ISalesOrderService,SalesOrderService>();
 builder.Services.AddScoped<IOrderConfirmationService, OrderConfirmationService>();
-
-
-// Add services to the container.
-builder.Services.AddControllersWithViews();
-
-// Register your PaymentService
-builder.Services.AddScoped<PaymentService>();
+builder.Services.AddScoped<IPaymentService, PaymentService>();
 
 
 var app = builder.Build();
@@ -62,6 +56,7 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+app.MapControllers();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Product}/{action=Index}/{id?}");

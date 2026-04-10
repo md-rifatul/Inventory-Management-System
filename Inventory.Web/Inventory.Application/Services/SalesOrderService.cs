@@ -24,26 +24,37 @@ namespace Inventory.Application.Services
             _mapper = mapper;
         }
 
-        public async Task AddSaleOrderAsync(CreateSalesOrderViewModel createSalesOrderViewModel)
+        public async Task<SalesOrder> AddSalesOrderAsync(CreateSalesOrderViewModel createSalesOrderViewModel)
         {
-            try
+            var salesOrder = _mapper.Map<SalesOrder>(createSalesOrderViewModel);
+            var salesOrderItem = _mapper.Map<SalesOrderItem>(createSalesOrderViewModel);
+
+            salesOrder.SealsOrderItems.Add(salesOrderItem);
+
+            _salesOrderRepository.Add(salesOrder);
+            await _salesOrderRepository.SaveAsync();
+
+            return salesOrder;
+        }
+
+
+        public async Task<SalesOrder?> SalesOrderAsyncById(int id)
+        {
+            return await _salesOrderRepository.GetByIdIncludingAsync(id, s => s.SealsOrderItems);
+        }
+
+        public async Task UpdateOrderStatusAsync(int orderId, SalesOrderStatus status)
+        {
+            var order = await _salesOrderRepository.GetByIdIncludingAsync(orderId);
+
+            if (order == null)
             {
-                //create sales order
-                var salesOrder = _mapper.Map<SalesOrder>(createSalesOrderViewModel);
-
-                //create salesOrderItems
-                var salesOrderItem = _mapper.Map<SalesOrderItem>(createSalesOrderViewModel);
-
-
-                salesOrder.SealsOrderItems.Add(salesOrderItem);
-
-                _salesOrderRepository.Add(salesOrder);
-                await _salesOrderRepository.SaveAsync();
+                throw new Exception("Sales order not found");
             }
-            catch (System.Exception)
-            {
-                throw;
-            }
+
+            order.SalesOrderStatus = status;
+
+            await _salesOrderRepository.SaveAsync();
         }
     }
 }

@@ -52,7 +52,7 @@ namespace Inventory.Web.Controllers
                 {
                     return View(createSalesOrderViewModel);
                 }
-                await _salesOrderService.AddSaleOrderAsync(createSalesOrderViewModel);
+                //await _salesOrderService.AddSaleOrderAsync(createSalesOrderViewModel);
                 return RedirectToAction("Pay", "Payment", new { amount = createSalesOrderViewModel.Quantity*createSalesOrderViewModel.UnitPrice });
             }
             catch (System.Exception)

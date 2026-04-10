@@ -1,10 +1,11 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Inventory.Application.Interfaces.IServices;
+using Microsoft.Extensions.Configuration;
 using Stripe;
 using Stripe.Checkout;
 
 namespace Inventory.Application.Services.Payment
 {
-    public class PaymentService
+    public class PaymentService : IPaymentService
     {
         private readonly IConfiguration _config;
 
@@ -14,8 +15,10 @@ namespace Inventory.Application.Services.Payment
             StripeConfiguration.ApiKey = _config["Stripe:SecretKey"];
         }
 
-        public Session CreateCheckoutSession(decimal amount)
+        public Session CreateCheckoutSession(decimal amount, int orderId)
         {
+            var baseUrl = _config["AppSettings:BaseUrl"] ?? "https://localhost:44320";
+
             var options = new SessionCreateOptions
             {
                 PaymentMethodTypes = new List<string> { "card" },
@@ -29,15 +32,21 @@ namespace Inventory.Application.Services.Payment
                             Currency = "usd",
                             ProductData = new SessionLineItemPriceDataProductDataOptions
                             {
-                                Name = "Test Product"
+                                Name = "Order Payment"
                             }
                         },
                         Quantity = 1
                     }
                 },
                 Mode = "payment",
-                SuccessUrl = "https://localhost:44320/Payment/Success?session_id={CHECKOUT_SESSION_ID}",
-                CancelUrl = "https://localhost:44320/Payment/Cancel",
+
+                Metadata = new Dictionary<string, string>
+                {
+                    {"orderId",orderId.ToString() }
+                },
+
+                SuccessUrl = $"{baseUrl}/Payment/Success?session_id={{CHECKOUT_SESSION_ID}}",
+                CancelUrl = $"{baseUrl}/Payment/Cancel",
             };
 
             var service = new SessionService();
