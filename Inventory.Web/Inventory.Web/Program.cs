@@ -3,6 +3,7 @@ using Inventory.Application.Interfaces.IServices;
 using Inventory.Application.Mappings;
 using Inventory.Application.Services;
 using Inventory.Application.Services.Payment;
+using Inventory.Domain.Entities.Identity;
 using Inventory.Infrastructure.Data;
 using Inventory.Infrastructure.Identity;
 using Inventory.Infrastructure.Repository;
@@ -68,7 +69,8 @@ if (!app.Environment.IsDevelopment())
 
 using (var scope = app.Services.CreateScope())
 {
-    await RoleSeeder.SeedAsync(scope.ServiceProvider);
+    await RoleSeeder.SeedAsync(scope.ServiceProvider);   // create roles
+    await AdminSeeder.SeedAdminAsync(scope.ServiceProvider); // create admin
 }
 
 app.UseHttpsRedirection();
