@@ -2,10 +2,12 @@ using Inventory.Application.Interfaces.IRepository;
 using Inventory.Application.Interfaces.IServices;
 using Inventory.Application.Mappings;
 using Inventory.Application.Services;
-using Inventory.Infrastructure.Data;
-using Inventory.Infrastructure.Repository;
-using Microsoft.EntityFrameworkCore;
 using Inventory.Application.Services.Payment;
+using Inventory.Infrastructure.Data;
+using Inventory.Infrastructure.Identity;
+using Inventory.Infrastructure.Repository;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +16,13 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
+
+
 
 
 builder.Services.AddAutoMapper(typeof(MappingProfile));
@@ -56,11 +65,18 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+
+using (var scope = app.Services.CreateScope())
+{
+    await RoleSeeder.SeedAsync(scope.ServiceProvider);
+}
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
