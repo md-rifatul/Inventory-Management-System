@@ -33,6 +33,21 @@ namespace Inventory.Web.Controllers.Account
         {
             return View();
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginViewModel model)
+        {
+            var result = await _authService.LoginAsync(model);
+
+            if (result.Success)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            ModelState.AddModelError("", result.Message);
+            return View(model);
+        }
+
         public async Task<IActionResult> Logout()
         {
             await _authService.LogoutAsync();

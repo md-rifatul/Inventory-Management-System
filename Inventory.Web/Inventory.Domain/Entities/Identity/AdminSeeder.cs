@@ -16,7 +16,7 @@ namespace Inventory.Domain.Entities.Identity
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
             string adminEmail = "admin@gmail.com";
-            string password = "admin@123";
+            string password = "Admin@123";
 
             var existingUser = await userManager.FindByEmailAsync(adminEmail);
 

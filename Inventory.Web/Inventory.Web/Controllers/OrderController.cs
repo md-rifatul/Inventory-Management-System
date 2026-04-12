@@ -1,12 +1,15 @@
 using AutoMapper;
 using Inventory.Application.Interfaces.IServices;
 using Inventory.Application.ViewModels.SalesOrder;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Inventory.Web.Controllers
 {
+
+    [Authorize(Roles ="Admin")]
     public class OrderController : Controller
     {
         private readonly IOrderConfirmationService _orderConfirmationService;

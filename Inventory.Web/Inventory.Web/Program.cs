@@ -1,7 +1,9 @@
 using Inventory.Application.Interfaces.IRepository;
 using Inventory.Application.Interfaces.IServices;
+using Inventory.Application.Interfaces.IServices.IAuthService;
 using Inventory.Application.Mappings;
 using Inventory.Application.Services;
+using Inventory.Application.Services.AuthService;
 using Inventory.Application.Services.Payment;
 using Inventory.Domain.Entities.Identity;
 using Inventory.Infrastructure.Data;
@@ -47,6 +49,7 @@ builder.Services.AddScoped<IPurchaseOrderService,PurchaseOrderService>();
 builder.Services.AddScoped<ISalesOrderService,SalesOrderService>();
 builder.Services.AddScoped<IOrderConfirmationService, OrderConfirmationService>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 
 // Add services to the container.

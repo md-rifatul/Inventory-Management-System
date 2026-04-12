@@ -43,10 +43,32 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="PurchaseOrder" asp-action="Index">Purchase Order</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="Index">Order</a>
-                        </li>
 
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="Index">Order</a>
+                            </li>
+                        }
+
+                        <div style="position:absolute; top:10px; right:20px;">
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <span>Hello, @User.Identity.Name</span>
+
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <a asp-controller="Admin" asp-action="Index">Admin Panel</a>
+                                }
+
+                                <a asp-controller="Account" asp-action="Logout">Logout</a>
+                            }
+                            else
+                            {
+                                <a asp-controller="Account" asp-action="Login">Login</a>
+                                <a asp-controller="Account" asp-action="Register">Register</a>
+                            }
+                        </div>
                     </ul>
                 </div>
             </div>
