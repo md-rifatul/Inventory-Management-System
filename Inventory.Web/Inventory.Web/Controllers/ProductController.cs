@@ -3,6 +3,7 @@ using Inventory.Application.Interfaces.IServices;
 using Inventory.Application.ViewModels;
 using Inventory.Application.ViewModels.Products;
 using Inventory.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Threading.Tasks;
@@ -36,6 +37,8 @@ namespace Inventory.Web.Controllers
                 throw;
             }
         }
+
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> Create()
         {
             try
@@ -64,6 +67,8 @@ namespace Inventory.Web.Controllers
             }
         }
         [HttpPost]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Create(ProductCreateViewModel newProduct)
         {
             try
@@ -97,6 +102,8 @@ namespace Inventory.Web.Controllers
             }
         }
         [HttpGet]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Edit(int id)
         {
             try
@@ -133,6 +140,8 @@ namespace Inventory.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Edit(ProductEditViewModel productEditView)
         {
             try
@@ -168,6 +177,8 @@ namespace Inventory.Web.Controllers
             }
         }
         [HttpGet]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Delete(int id)
         {
             try
@@ -187,6 +198,8 @@ namespace Inventory.Web.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> DeleteConfirm(int id)
         {
             try
@@ -200,6 +213,8 @@ namespace Inventory.Web.Controllers
             }
         }
         [HttpGet]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> LowStock()
         {
             try
@@ -214,6 +229,8 @@ namespace Inventory.Web.Controllers
             }
         }
         [HttpGet]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> AddStock(int id)
         {
             try
@@ -228,6 +245,8 @@ namespace Inventory.Web.Controllers
             }
         }
         [HttpPost]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> AddStock(AddStockViewModel addStockViewModel)
         {
             try
