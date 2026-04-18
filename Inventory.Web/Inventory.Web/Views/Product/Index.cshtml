@@ -1,0 +1,61 @@
+﻿@using Inventory.Application.ViewModels.Products
+@model IEnumerable<ProductViewModel>
+
+@{
+    ViewData["Title"] = "Product List";
+}
+
+<h2>Product List</h2>
+
+@if (User.IsInRole("Admin"))
+{
+    <p>
+        <a asp-action="Create" class="btn btn-primary">Create New Product</a>
+    </p>
+}
+
+
+<form asp-action="Search" method="get" class="form-inline mb-3">
+    <input type="text" name="productName" class="form-control mr-2" placeholder="Search products..." />
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
+
+<table class="table table-bordered table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>SKU</th>
+            <th>Unit Price</th>
+            <th>Stock</th>
+            <th>Minimum Stock Level</th>
+            <th>Category</th>
+            <th>Supplier</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Name</td>
+                <td>@item.Sku</td>
+                <td>@item.UnitPrice</td>
+                <td>@item.QuantityOfStock</td>
+                <td>@item.MinimumStockLevel</td>
+                <td>@item.CategoryName</td>
+                <td>@item.SupplierName</td>
+                <td>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Delete</a>
+                    }
+
+                    <a asp-controller="Sale" asp-action="GetProduct" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Sale</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

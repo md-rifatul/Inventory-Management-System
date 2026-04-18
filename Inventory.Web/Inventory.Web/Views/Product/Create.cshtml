@@ -1,0 +1,69 @@
+﻿@using Inventory.Application.ViewModels.Products
+
+@model ProductCreateViewModel
+
+@{
+    ViewData["Title"] = "Create Product";
+}
+
+<h2>Create Product</h2>
+
+<form asp-action="Create" method="post">
+    @Html.AntiForgeryToken()
+
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Sku" class="form-label"></label>
+        <input asp-for="Sku" class="form-control" />
+        <span asp-validation-for="Sku" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="UnitPrice" class="form-label"></label>
+        <input asp-for="UnitPrice" class="form-control" />
+        <span asp-validation-for="UnitPrice" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="QuantityOfStock" class="form-label"></label>
+        <input asp-for="QuantityOfStock" class="form-control" />
+        <span asp-validation-for="QuantityOfStock" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="MinimumStockLevel" class="form-label"></label>
+        <input asp-for="MinimumStockLevel" class="form-control" />
+        <span asp-validation-for="MinimumStockLevel" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="SupplierId" class="form-label">Supplier</label>
+        <select asp-for="SupplierId" class="form-select" asp-items="Model.Suppliers">
+            <option value="">-- Select Supplier --</option>
+        </select>
+        <span asp-validation-for="SupplierId" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="CategoryId" class="form-label">Category</label>
+        <select asp-for="CategoryId" class="form-select" asp-items="Model.Categories">
+            <option value="">-- Select Category --</option>
+        </select>
+        <span asp-validation-for="CategoryId" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success">Save</button>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,44 @@
+﻿@using Inventory.Application.ViewModels.Products
+
+@model IEnumerable<ProductViewLowStock>
+
+@{
+    ViewData["Title"] = "Low Stock Products";
+}
+
+<h2>Low Stock Products</h2>
+
+<table class="table table-bordered table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th>Id</th>
+            <th>Product Name</th>
+            <th>SKU</th>
+            <th>Category</th>
+            <th>Supplier</th>
+            <th>Stock</th>
+            <th>Minimum Level</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr class="table-danger">
+                <td>@item.Id</td>
+                <td>@item.Name</td>
+                <td>@item.Sku</td>
+                <td>@item.CategoryName</td>
+                <td>@item.SupplierName</td>
+                <td>@item.QuantityOfStock</td>
+                <td>@item.MinimumStockLevel</td>
+                <td>
+                    <!-- Example action buttons -->
+                    <a asp-action="AddStock" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Add Product</a>
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
